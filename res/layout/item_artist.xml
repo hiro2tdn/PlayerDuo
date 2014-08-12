@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ArtistName"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/albums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="albums" />
+
+    <TextView
+        android:id="@+id/tracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tracks" />
+
+</LinearLayout>

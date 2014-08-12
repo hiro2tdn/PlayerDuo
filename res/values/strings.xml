@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PlayerDuo</string>
+    <string name="action_settings">設定</string>
+
+    <string name="artist">Artist</string>
+    <string name="album">Album</string>
+    <string name="track">Track</string>
+
+    <!-- 日本語では常にotherになる -->
+	<plurals name="artists">
+        <item quantity="one">%1$d Artist</item>
+        <item quantity="other">%1$d Artists</item>
+    </plurals>
+    <plurals name="albums">
+        <item quantity="one">%1$d Album</item>
+        <item quantity="other">%1$d Albums</item>
+    </plurals>
+    <plurals name="tracks">
+        <item quantity="one">%1$d Track</item>
+        <item quantity="other">%1$d Tracks</item>
+    </plurals>
+</resources>
