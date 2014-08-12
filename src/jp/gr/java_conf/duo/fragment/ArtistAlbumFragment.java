@@ -41,8 +41,7 @@ public class ArtistAlbumFragment extends Fragment {
         ListAlbumAdapter adapter = new ListAlbumAdapter(activity, albums);
         ListView albumList = (ListView) view.findViewById(R.id.list);
         albumList.setAdapter(adapter);
-        albumList.setOnItemClickListener(activity.AlbumClickListener);
-        albumList.setOnItemLongClickListener(activity.AlbumLongClickListener);
+        albumList.setOnItemClickListener(activity.albumClickListener);
 
         return view;
     }

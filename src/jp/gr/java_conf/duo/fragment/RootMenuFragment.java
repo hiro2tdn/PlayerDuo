@@ -17,13 +17,14 @@ public class RootMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.menu, container, false);
+        View view = inflater.inflate(R.layout.root_menu, container, false);
 
+        // ページャ
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(super.getChildFragmentManager());
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        /* PagetTabカスタム */
+        // ページャタブ
         PagerTabStrip strip = (PagerTabStrip) view.findViewById(R.id.pager_title_strip);
         strip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         strip.setTextSpacing(50);
@@ -74,5 +75,4 @@ public class RootMenuFragment extends Fragment {
             return null;
         }
     }
-
 }

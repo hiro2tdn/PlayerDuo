@@ -27,8 +27,7 @@ public class AllArtistsFragment extends Fragment {
         ListArtistAdapter adapter = new ListArtistAdapter(activity, artists);
         ListView artistList = (ListView) view.findViewById(R.id.list);
         artistList.setAdapter(adapter);
-        artistList.setOnItemClickListener(activity.ArtistClickListener);
-        artistList.setOnItemLongClickListener(activity.ArtistLongClickListener);
+        artistList.setOnItemClickListener(activity.artistClickListener);
 
         return view;
     }

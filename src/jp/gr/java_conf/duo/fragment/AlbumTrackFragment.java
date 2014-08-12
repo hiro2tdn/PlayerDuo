@@ -53,8 +53,7 @@ public class AlbumTrackFragment extends Fragment {
         ListTrackAdapter adapter = new ListTrackAdapter(activity, tracks);
         ListView trackList = (ListView) view.findViewById(R.id.list);
         trackList.setAdapter(adapter);
-        trackList.setOnItemClickListener(activity.TrackClickListener);
-        trackList.setOnItemLongClickListener(activity.TrackLongClickListener);
+        trackList.setOnItemClickListener(activity.trackClickListener);
 
         return view;
     }

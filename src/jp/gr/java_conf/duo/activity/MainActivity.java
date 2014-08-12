@@ -8,15 +8,21 @@ import jp.gr.java_conf.duo.fragment.AlbumTrackFragment;
 import jp.gr.java_conf.duo.fragment.ArtistAlbumFragment;
 import jp.gr.java_conf.duo.fragment.OneTrackFragment;
 import jp.gr.java_conf.duo.fragment.RootMenuFragment;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /* メインアクティビティ */
 public class MainActivity extends FragmentActivity {
@@ -28,6 +34,43 @@ public class MainActivity extends FragmentActivity {
     private Album focusedAlbum;
     private Artist focusedArtist;
     private Track focusedTrack;
+    private MediaPlayer mp;
+    private Button playButton;
+    private Button stopButton;
+
+    /* タップしたアルバムをセット */
+    public void setFocusedAlbum(Album album) {
+        if (album != null) {
+            focusedAlbum = album;
+        }
+    }
+
+    /* タップしたアルバムを取得 */
+    public Album getFocusedAlbum() {
+        return focusedAlbum;
+    }
+
+    /* タップしたアーティストをセット */
+    public void setFocusedArtist(Artist artist) {
+        if (artist != null)
+            focusedArtist = artist;
+    }
+
+    /* タップしたアーティストを取得 */
+    public Artist getFocusedArtist() {
+        return focusedArtist;
+    }
+
+    /* タップしたトラックをセット */
+    public void setFocusedTrack(Track track) {
+        if (track != null)
+            focusedTrack = track;
+    }
+
+    /* タップしたトラックを取得 */
+    public Track getFocusedTrack() {
+        return focusedTrack;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +82,12 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
 
         setContentView(R.layout.activity_main);
+
+        playButton = (Button) findViewById(R.id.playButton);
+        playButton.setOnClickListener(playClickListener);
+
+        stopButton = (Button) findViewById(R.id.stopButton);
+        stopButton.setOnClickListener(stopClickListener);
     }
 
     @Override
@@ -47,7 +96,7 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    /* 指定されたタイプのフラグメントを、現在の画面の上に乗せる　 */
+    /* 指定されたタイプのフラグメントを、現在の画面の上に乗せる */
     public void setNewFragment(FrgmType frgmType) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -78,100 +127,93 @@ public class MainActivity extends FragmentActivity {
         fm.popBackStack();
     }
 
-    /* タップしたアルバムをセット */
-    public void focusAlbum(Album item) {
-        if (item != null) {
-            focusedAlbum = item;
-        }
-    }
-
-    /* タップしたアルバムを取得 */
-    public Album getFocusedAlbum() {
-        return focusedAlbum;
-    }
-
-    /* アルバムをタップ */
-    public AdapterView.OnItemClickListener AlbumClickListener = new AdapterView.OnItemClickListener() {
+    /* アルバムクリック時の処理 */
+    public OnItemClickListener albumClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusAlbum((Album) lv.getItemAtPosition(position));
+            setFocusedAlbum((Album) lv.getItemAtPosition(position));
             setNewFragment(FrgmType.fAlbum);
         }
     };
 
-    /* アルバムをロングタップ */
-    public AdapterView.OnItemLongClickListener AlbumLongClickListener = new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            Album item = (Album) lv.getItemAtPosition(position);
-            Toast.makeText(MainActivity.this, item.getAlbum(), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-    };
-
-    /* タップしたアーティストをセット */
-    public void focusArtist(Artist item) {
-        if (item != null)
-            focusedArtist = item;
-    }
-
-    /* タップしたアーティストを取得 */
-    public Artist getFocusedArtist() {
-        return focusedArtist;
-    }
-
-    /* アーティストをタップ */
-    public AdapterView.OnItemClickListener ArtistClickListener = new AdapterView.OnItemClickListener() {
+    /* アーティストクリック時の処理 */
+    public OnItemClickListener artistClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusArtist((Artist) lv.getItemAtPosition(position));
+            setFocusedArtist((Artist) lv.getItemAtPosition(position));
             setNewFragment(FrgmType.fArtist);
         }
     };
 
-    /* アーティストをロングタップ */
-    public AdapterView.OnItemLongClickListener ArtistLongClickListener = new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            Artist item = (Artist) lv.getItemAtPosition(position);
-            Toast.makeText(MainActivity.this, item.getArtist(), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-    };
-
-    /* タップしたトラックをセット */
-    public void focusTrack(Track item) {
-        if (item != null)
-            focusedTrack = item;
-    }
-
-    /* タップしたトラックを取得 */
-    public Track getFocusedTrack() {
-        return focusedTrack;
-    }
-
-    /* トラックをタップ */
-    public AdapterView.OnItemClickListener TrackClickListener = new AdapterView.OnItemClickListener() {
+    /* トラッククリック時の処理 */
+    public OnItemClickListener trackClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusTrack((Track) lv.getItemAtPosition(position));
+            setFocusedTrack((Track) lv.getItemAtPosition(position));
             setNewFragment(FrgmType.fTrack);
         }
     };
 
-    /* トラックをロングタップ */
-    public AdapterView.OnItemLongClickListener TrackLongClickListener = new AdapterView.OnItemLongClickListener() {
+    /* PLAYクリック時の処理 */
+    private OnClickListener playClickListener = new OnClickListener() {
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            Track item = (Track) lv.getItemAtPosition(position);
-            Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-            return true;
+        public void onClick(View v) {
+            if (mp != null) {
+                mp.release();
+            }
+            mp = new MediaPlayer();
+            mp.setOnCompletionListener(playCompListener);
+            mp.setOnPreparedListener(playPreparedListener);
+            mp.setOnErrorListener(playErrorListener);
+
+            try {
+                mp.setDataSource(getApplicationContext(), getFocusedTrack().getUri());
+                mp.prepare();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /* STOPクリック時の処理 */
+    private OnClickListener stopClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mp != null) {
+                mp.pause();
+            }
+        }
+    };
+
+    /* 演奏の準備が完了したら呼ばれる。 */
+    private OnPreparedListener playPreparedListener = new OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer ThisMP) {
+            if (mp == ThisMP) {
+                mp.start();
+            }
+        }
+    };
+
+    /* 演奏が終了したら呼ばれる。 */
+    private OnCompletionListener playCompListener = new OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer ThisMP) {
+            if (mp == ThisMP) {
+                mp.release();
+                ;
+            }
+        }
+    };
+
+    /* エラーが発生した時に呼ばれる。 */
+    private OnErrorListener playErrorListener = new OnErrorListener() {
+        @Override
+        public boolean onError(MediaPlayer ThisMP, int what, int extra) {
+            return false;
         }
     };
 }

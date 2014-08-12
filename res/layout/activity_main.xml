@@ -20,22 +20,19 @@
         android:gravity="center_horizontal" >
 
         <Button
-            android:id="@+id/test1"
-            android:layout_width="wrap_content"
+            android:id="@+id/playButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:layout_weight="1"
+            android:text="PLAY" />
 
         <Button
-            android:id="@+id/test2"
-            android:layout_width="wrap_content"
+            android:id="@+id/stopButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="St/Sk" />
+            android:layout_weight="1"
+            android:text="STOP" />
 
-        <Button
-            android:id="@+id/test3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SKIP" />
     </LinearLayout>
 
 </LinearLayout>
