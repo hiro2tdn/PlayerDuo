@@ -16,6 +16,14 @@ public class Artist {
     private int albums;
     private int tracks;
 
+    /* アーティスト取得時に取得する情報 */
+    public static final String[] FILLED_PROJECTION = {
+        MediaStore.Audio.Artists._ID,
+        MediaStore.Audio.Artists.ARTIST,
+        MediaStore.Audio.Artists.ARTIST_KEY,
+        MediaStore.Audio.Artists.NUMBER_OF_ALBUMS,
+        MediaStore.Audio.Artists.NUMBER_OF_TRACKS };
+
     public Artist(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Artists._ID));
         artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
@@ -64,19 +72,8 @@ public class Artist {
         this.tracks = tracks;
     }
 
-    /* アーティスト取得時に取得する情報 */
-    public static final String[] FILLED_PROJECTION = {
-        MediaStore.Audio.Artists._ID,
-        MediaStore.Audio.Artists.ARTIST,
-        MediaStore.Audio.Artists.ARTIST_KEY,
-        MediaStore.Audio.Artists.NUMBER_OF_ALBUMS,
-        MediaStore.Audio.Artists.NUMBER_OF_TRACKS };
-
     /* 全アーティスト取得 */
     public static List<Artist> getItems(Context activity) {
-
-        List<Artist> artists = new ArrayList<Artist>();
-
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
@@ -85,6 +82,7 @@ public class Artist {
                 null,
                 "ARTIST  ASC");
 
+        List<Artist> artists = new ArrayList<Artist>();
         while (cursor.moveToNext()) {
             artists.add(new Artist(cursor));
         }

@@ -49,7 +49,7 @@ public class AlbumTrackFragment extends Fragment {
         }
 
         // トラックリスト
-        List<Track> tracks = Track.getItemsByAlbum(getActivity(), album.getAlbumId());
+        List<Track> tracks = Track.getItemsByAlbumId(getActivity(), album.getId());
         ListTrackAdapter adapter = new ListTrackAdapter(activity, tracks);
         ListView trackList = (ListView) view.findViewById(R.id.list);
         trackList.setAdapter(adapter);

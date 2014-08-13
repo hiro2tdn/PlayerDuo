@@ -31,6 +31,18 @@ public class Track {
     private String lyrics;   // 歌詞
     private Uri uri;         // URI
 
+    /* トラック取得時に取得する情報 */
+    public static final String[] COLUMNS = {
+        MediaStore.Audio.Media._ID,
+        MediaStore.Audio.Media.DATA,
+        MediaStore.Audio.Media.TITLE,
+        MediaStore.Audio.Media.ALBUM,
+        MediaStore.Audio.Media.ARTIST,
+        MediaStore.Audio.Media.ALBUM_ID,
+        MediaStore.Audio.Media.ARTIST_ID,
+        MediaStore.Audio.Media.DURATION,
+        MediaStore.Audio.Media.TRACK};
+
     public Track(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
         path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
@@ -133,8 +145,6 @@ public class Track {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            lyrics = "";
         }
 
         return lyrics;
@@ -152,22 +162,8 @@ public class Track {
         this.uri = uri;
     }
 
-    /* トラック取得時に取得する情報 */
-    public static final String[] COLUMNS = {
-        MediaStore.Audio.Media._ID,
-        MediaStore.Audio.Media.DATA,
-        MediaStore.Audio.Media.TITLE,
-        MediaStore.Audio.Media.ALBUM,
-        MediaStore.Audio.Media.ARTIST,
-        MediaStore.Audio.Media.ALBUM_ID,
-        MediaStore.Audio.Media.ARTIST_ID,
-        MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.TRACK};
-
     /* 全トラック取得 */
     public static List<Track> getItems(Context activity) {
-
-        List<Track> tracks = new ArrayList<Track>();
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -176,6 +172,7 @@ public class Track {
                 null,
                 null);
 
+        List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
             /* １秒未満は無視する */
             if (cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)) < 1000) {
@@ -188,10 +185,27 @@ public class Track {
         return tracks;
     }
 
-    /* 指定されたアルバムのトラック取得 */
-    public static List<Track> getItemsByAlbum(Context activity, long albumId) {
+    /* 指定されたアーティストのトラック取得 */
+    public static List<Track> getItemsByArtistId(Context activity, long artistId) {
+        ContentResolver resolver = activity.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                Track.COLUMNS,
+                MediaStore.Audio.Media.ARTIST_ID + "= ?",
+                new String[] { String.valueOf(artistId) },
+                null);
 
         List<Track> tracks = new ArrayList<Track>();
+        while (cursor.moveToNext()) {
+            tracks.add(new Track(cursor));
+        }
+
+        cursor.close();
+        return tracks;
+    }
+
+    /* 指定されたアルバムのトラック取得 */
+    public static List<Track> getItemsByAlbumId(Context activity, long albumId) {
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -200,15 +214,27 @@ public class Track {
                 new String[] { String.valueOf(albumId) },
                 null);
 
+        List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
-            /* １秒未満は無視する */
-            if (cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)) < 1000) {
-                continue;
-            }
             tracks.add(new Track(cursor));
         }
 
         cursor.close();
         return tracks;
+    }
+
+    /* 指定されたトラック取得 */
+    public static Track getItemsByTrackId(Context activity, long id) {
+        ContentResolver resolver = activity.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                Track.COLUMNS,
+                MediaStore.Audio.Media._ID + "= ?",
+                new String[] { String.valueOf(id) },
+                null);
+
+        Track track = new Track(cursor);
+        cursor.close();
+        return track;
     }
 }

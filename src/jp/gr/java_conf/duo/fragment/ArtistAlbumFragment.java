@@ -37,7 +37,7 @@ public class ArtistAlbumFragment extends Fragment {
         artist_tracks.setText(getResources().getQuantityString(R.plurals.tracks, artist.getTracks(), artist.getTracks()));
 
         // アルバムリスト
-        List<Album> albums = Album.getItemsByArtist(getActivity(), artist.getId());
+        List<Album> albums = Album.getItemsByArtistId(getActivity(), artist.getId());
         ListAlbumAdapter adapter = new ListAlbumAdapter(activity, albums);
         ListView albumList = (ListView) view.findViewById(R.id.list);
         albumList.setAdapter(adapter);

@@ -6,12 +6,8 @@ import jp.gr.java_conf.duo.domain.Artist;
 import jp.gr.java_conf.duo.domain.Track;
 import jp.gr.java_conf.duo.fragment.AlbumTrackFragment;
 import jp.gr.java_conf.duo.fragment.ArtistAlbumFragment;
-import jp.gr.java_conf.duo.fragment.OneTrackFragment;
 import jp.gr.java_conf.duo.fragment.RootMenuFragment;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnPreparedListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,33 +17,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 
 /* メインアクティビティ */
 public class MainActivity extends FragmentActivity {
 
     enum FrgmType {
-        fRoot, fAlbum, fArtist, fTrack
+        fRoot, fArtist, fAlbum
     }
 
-    private Album focusedAlbum;
     private Artist focusedArtist;
+    private Album focusedAlbum;
     private Track focusedTrack;
-    private MediaPlayer mp;
-    private Button playButton;
-    private Button stopButton;
 
     /* タップしたアルバムをセット */
     public void setFocusedAlbum(Album album) {
         if (album != null) {
             focusedAlbum = album;
         }
-    }
-
-    /* タップしたアルバムを取得 */
-    public Album getFocusedAlbum() {
-        return focusedAlbum;
     }
 
     /* タップしたアーティストをセット */
@@ -59,6 +46,11 @@ public class MainActivity extends FragmentActivity {
     /* タップしたアーティストを取得 */
     public Artist getFocusedArtist() {
         return focusedArtist;
+    }
+
+    /* タップしたアルバムを取得 */
+    public Album getFocusedAlbum() {
+        return focusedAlbum;
     }
 
     /* タップしたトラックをセット */
@@ -75,19 +67,33 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.root, new RootMenuFragment(), "Root");
+        ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
         ft.commit();
 
-        setContentView(R.layout.activity_main);
+        // ALLPLAYボタンの動作設定
+        findViewById(R.id.allPlayButton).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        playButton = (Button) findViewById(R.id.playButton);
-        playButton.setOnClickListener(playClickListener);
+                // インテントのインスタンス生成
+                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
 
-        stopButton = (Button) findViewById(R.id.stopButton);
-        stopButton.setOnClickListener(stopClickListener);
+                if (focusedAlbum != null) {
+                    // アルバムIDの受け渡し
+                    intent.putExtra("album", focusedAlbum.getId());
+                } else if (focusedArtist != null) {
+                    // アーティストIDの受け渡し
+                    intent.putExtra("artist", focusedArtist.getId());
+                }
+
+                // PLAYアクティビティ起動
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -96,23 +102,32 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    /* 指定されたタイプのフラグメントを、現在の画面の上に乗せる */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (focusedTrack != null) {
+            focusedTrack = null;
+        } else if (focusedAlbum != null) {
+            focusedAlbum = null;
+        } else if (focusedArtist != null) {
+            focusedArtist = null;
+        }
+    }
+
+    /* 指定されたフラグメントに置き換える */
     public void setNewFragment(FrgmType frgmType) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         switch (frgmType) {
         case fRoot:
-            ft.replace(R.id.root, new RootMenuFragment(), "Root");
-            break;
-        case fAlbum:
-            ft.replace(R.id.root, new AlbumTrackFragment(), "album");
+            ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
             break;
         case fArtist:
-            ft.replace(R.id.root, new ArtistAlbumFragment(), "artist");
+            ft.replace(R.id.root, new ArtistAlbumFragment(), "fArtist");
             break;
-        case fTrack:
-            ft.replace(R.id.root, new OneTrackFragment(), "track");
+        case fAlbum:
+            ft.replace(R.id.root, new AlbumTrackFragment(), "fAlbum");
             break;
         }
 
@@ -127,23 +142,26 @@ public class MainActivity extends FragmentActivity {
         fm.popBackStack();
     }
 
-    /* アルバムクリック時の処理 */
-    public OnItemClickListener albumClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            setFocusedAlbum((Album) lv.getItemAtPosition(position));
-            setNewFragment(FrgmType.fAlbum);
-        }
-    };
-
     /* アーティストクリック時の処理 */
     public OnItemClickListener artistClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            setFocusedArtist((Artist) lv.getItemAtPosition(position));
+            focusedArtist = (Artist) lv.getItemAtPosition(position);
+            focusedAlbum = null;
+            focusedTrack = null;
             setNewFragment(FrgmType.fArtist);
+        }
+    };
+
+    /* アルバムクリック時の処理 */
+    public OnItemClickListener albumClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ListView lv = (ListView) parent;
+            focusedAlbum = (Album) lv.getItemAtPosition(position);
+            focusedTrack = null;
+            setNewFragment(FrgmType.fAlbum);
         }
     };
 
@@ -152,68 +170,14 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            setFocusedTrack((Track) lv.getItemAtPosition(position));
-            setNewFragment(FrgmType.fTrack);
-        }
-    };
+            focusedTrack = (Track) lv.getItemAtPosition(position);
 
-    /* PLAYクリック時の処理 */
-    private OnClickListener playClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mp != null) {
-                mp.release();
-            }
-            mp = new MediaPlayer();
-            mp.setOnCompletionListener(playCompListener);
-            mp.setOnPreparedListener(playPreparedListener);
-            mp.setOnErrorListener(playErrorListener);
-
-            try {
-                mp.setDataSource(getApplicationContext(), getFocusedTrack().getUri());
-                mp.prepare();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    /* STOPクリック時の処理 */
-    private OnClickListener stopClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mp != null) {
-                mp.pause();
-            }
-        }
-    };
-
-    /* 演奏の準備が完了したら呼ばれる。 */
-    private OnPreparedListener playPreparedListener = new OnPreparedListener() {
-        @Override
-        public void onPrepared(MediaPlayer ThisMP) {
-            if (mp == ThisMP) {
-                mp.start();
-            }
-        }
-    };
-
-    /* 演奏が終了したら呼ばれる。 */
-    private OnCompletionListener playCompListener = new OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer ThisMP) {
-            if (mp == ThisMP) {
-                mp.release();
-                ;
-            }
-        }
-    };
-
-    /* エラーが発生した時に呼ばれる。 */
-    private OnErrorListener playErrorListener = new OnErrorListener() {
-        @Override
-        public boolean onError(MediaPlayer ThisMP, int what, int extra) {
-            return false;
+            // インテントのインスタンス生成
+            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            // トラックIDの受け渡し
+            intent.putExtra("track", focusedTrack.getId());
+            // PLAYアクティビティ起動
+            startActivity(intent);
         }
     };
 }

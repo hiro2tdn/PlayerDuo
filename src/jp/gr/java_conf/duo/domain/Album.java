@@ -13,16 +13,23 @@ public class Album {
     private long id;
     private String album;
     private String albumArt;
-    private long albumId;
     private String albumKey;
     private String artist;
     private int tracks;
+
+    /* アルバム取得時に取得する情報 */
+    public static final String[] FILLED_PROJECTION = {
+        MediaStore.Audio.Albums._ID,
+        MediaStore.Audio.Albums.ALBUM,
+        MediaStore.Audio.Albums.ALBUM_ART,
+        MediaStore.Audio.Albums.ALBUM_KEY,
+        MediaStore.Audio.Albums.ARTIST,
+        MediaStore.Audio.Albums.NUMBER_OF_SONGS };
 
     public Album(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Albums._ID));
         album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM));
         albumArt = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-        albumId = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
         albumKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_KEY));
         artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST));
         tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Albums.NUMBER_OF_SONGS));
@@ -52,14 +59,6 @@ public class Album {
         this.albumArt = albumArt;
     }
 
-    public long getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(long albumId) {
-        this.albumId = albumId;
-    }
-
     public String getAlbumKey() {
         return albumKey;
     }
@@ -84,19 +83,8 @@ public class Album {
         this.tracks = tracks;
     }
 
-    /* アルバム取得時に取得する情報 */
-    public static final String[] FILLED_PROJECTION = {
-        MediaStore.Audio.Albums._ID,
-        MediaStore.Audio.Albums.ALBUM,
-        MediaStore.Audio.Albums.ALBUM_ART,
-        MediaStore.Audio.Albums.ALBUM_KEY,
-        MediaStore.Audio.Albums.ARTIST,
-        MediaStore.Audio.Albums.NUMBER_OF_SONGS };
-
     /* 全アルバム取得 */
     public static List<Album> getItems(Context activity) {
-
-        List<Album> albums = new ArrayList<Album>();
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
@@ -105,6 +93,7 @@ public class Album {
                 null,
                 "ALBUM  ASC");
 
+        List<Album> albums = new ArrayList<Album>();
         while (cursor.moveToNext()) {
             albums.add(new Album(cursor));
         }
@@ -114,9 +103,7 @@ public class Album {
     }
 
     /* 指定されたアーティストのアルバム取得 */
-    public static List<Album> getItemsByArtist(Context activity, long artistId) {
-
-        List<Album> albums = new ArrayList<Album>();
+    public static List<Album> getItemsByArtistId(Context activity, long artistId) {
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
@@ -125,6 +112,7 @@ public class Album {
                 new String[] { String.valueOf(artistId) },
                 "ALBUM  ASC");
 
+        List<Album> albums = new ArrayList<Album>();
         while (cursor.moveToNext()) {
             albums.add(new Album(cursor));
         }

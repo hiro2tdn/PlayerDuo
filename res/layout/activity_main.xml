@@ -6,32 +6,24 @@
 
     <FrameLayout
         android:id="@+id/root"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1" >
+
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/playPanel"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:background="#000000"
-        android:gravity="center_horizontal" >
+        android:layout_height="wrap_content"
+        android:background="#000000" >
 
         <Button
-            android:id="@+id/playButton"
-            android:layout_width="0dp"
+            android:id="@+id/allPlayButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="PLAY" />
-
-        <Button
-            android:id="@+id/stopButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="STOP" />
+            android:text="ALL PLAY" />
 
     </LinearLayout>
 
