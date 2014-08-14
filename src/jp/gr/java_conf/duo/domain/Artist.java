@@ -17,7 +17,7 @@ public class Artist {
     private int tracks;
 
     /* アーティスト取得時に取得する情報 */
-    public static final String[] FILLED_PROJECTION = {
+    public static final String[] COLUMNS = {
         MediaStore.Audio.Artists._ID,
         MediaStore.Audio.Artists.ARTIST,
         MediaStore.Audio.Artists.ARTIST_KEY,
@@ -77,7 +77,7 @@ public class Artist {
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                Artist.FILLED_PROJECTION,
+                Artist.COLUMNS,
                 null,
                 null,
                 "ARTIST  ASC");
@@ -91,4 +91,19 @@ public class Artist {
         return artists;
     }
 
+    /* 指定されたアーティスト取得 */
+    public static Artist getItemByArtistId(Context activity, long id) {
+        ContentResolver resolver = activity.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
+                Artist.COLUMNS,
+                MediaStore.Audio.Artists._ID + "= ?",
+                new String[] { String.valueOf(id) },
+                null);
+
+        cursor.moveToNext();
+        Artist artist = new Artist(cursor);
+        cursor.close();
+        return artist;
+    }
 }

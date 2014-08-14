@@ -17,12 +17,21 @@ import android.widget.TextView;
 
 /* 選択アーティストのアルバムフラグメント */
 public class ArtistAlbumFragment extends Fragment {
+
+    long artistId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.artist_album, container, false);
         MainActivity activity = (MainActivity) super.getActivity();
-        Artist artist = activity.getFocusedArtist();
+
+        // アクティビティからID取得。無い場合、保存値を取得（画面回転対策）
+        artistId = activity.getArtistId();
+        if (artistId == 0) {
+            artistId = savedInstanceState.getLong("ARTIST_ID");
+        }
+        Artist artist = Artist.getItemByArtistId(activity, artistId);
 
         // タイトル
         TextView artist_title = (TextView) view.findViewById(R.id.title);
@@ -44,5 +53,11 @@ public class ArtistAlbumFragment extends Fragment {
         albumList.setOnItemClickListener(activity.albumClickListener);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      outState.putLong("ARTIST_ID", artistId);
     }
 }

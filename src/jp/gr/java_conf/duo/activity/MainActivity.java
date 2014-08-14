@@ -23,45 +23,30 @@ import android.widget.ListView;
 public class MainActivity extends FragmentActivity {
 
     enum FrgmType {
-        fRoot, fArtist, fAlbum
+        fRoot, fAlbum, fArtist
     }
 
-    private Artist focusedArtist;
-    private Album focusedAlbum;
-    private Track focusedTrack;
+    private long albumId;
+    private long artistId;
 
-    /* タップしたアルバムをセット */
-    public void setFocusedAlbum(Album album) {
-        if (album != null) {
-            focusedAlbum = album;
-        }
+    /* 選択したアルバムを設定 */
+    public void setAlbumId(long id) {
+        albumId = id;
     }
 
-    /* タップしたアーティストをセット */
-    public void setFocusedArtist(Artist artist) {
-        if (artist != null)
-            focusedArtist = artist;
+    /* 選択したアルバムを取得 */
+    public long getAlbumId() {
+        return albumId;
     }
 
-    /* タップしたアーティストを取得 */
-    public Artist getFocusedArtist() {
-        return focusedArtist;
+    /* 選択したアーティストを取得 */
+    public long getArtistId() {
+        return artistId;
     }
 
-    /* タップしたアルバムを取得 */
-    public Album getFocusedAlbum() {
-        return focusedAlbum;
-    }
-
-    /* タップしたトラックをセット */
-    public void setFocusedTrack(Track track) {
-        if (track != null)
-            focusedTrack = track;
-    }
-
-    /* タップしたトラックを取得 */
-    public Track getFocusedTrack() {
-        return focusedTrack;
+    /* 選択したアーティストを設定 */
+    public void setArtistId(long id) {
+        artistId = id;
     }
 
     @Override
@@ -71,29 +56,13 @@ public class MainActivity extends FragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+
+        // TODO 画面回転すると最初のフラグメントに戻るのを直したい
         ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
         ft.commit();
 
         // ALLPLAYボタンの動作設定
-        findViewById(R.id.allPlayButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // インテントのインスタンス生成
-                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-
-                if (focusedAlbum != null) {
-                    // アルバムIDの受け渡し
-                    intent.putExtra("album", focusedAlbum.getId());
-                } else if (focusedArtist != null) {
-                    // アーティストIDの受け渡し
-                    intent.putExtra("artist", focusedArtist.getId());
-                }
-
-                // PLAYアクティビティ起動
-                startActivity(intent);
-            }
-        });
+        findViewById(R.id.allPlayButton).setOnClickListener(allPlayClickListener);
     }
 
     @Override
@@ -105,12 +74,12 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (focusedTrack != null) {
-            focusedTrack = null;
-        } else if (focusedAlbum != null) {
-            focusedAlbum = null;
-        } else if (focusedArtist != null) {
-            focusedArtist = null;
+
+        // TODO フラグメントの状態による判定にしたい
+        if (albumId != 0) {
+            albumId = 0;
+        } else if (artistId != 0) {
+            artistId = 0;
         }
     }
 
@@ -123,11 +92,11 @@ public class MainActivity extends FragmentActivity {
         case fRoot:
             ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
             break;
-        case fArtist:
-            ft.replace(R.id.root, new ArtistAlbumFragment(), "fArtist");
-            break;
         case fAlbum:
             ft.replace(R.id.root, new AlbumTrackFragment(), "fAlbum");
+            break;
+        case fArtist:
+            ft.replace(R.id.root, new ArtistAlbumFragment(), "fArtist");
             break;
         }
 
@@ -147,9 +116,8 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusedArtist = (Artist) lv.getItemAtPosition(position);
-            focusedAlbum = null;
-            focusedTrack = null;
+            artistId = ((Artist) lv.getItemAtPosition(position)).getId();
+            albumId = 0;
             setNewFragment(FrgmType.fArtist);
         }
     };
@@ -159,8 +127,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusedAlbum = (Album) lv.getItemAtPosition(position);
-            focusedTrack = null;
+            albumId = ((Album) lv.getItemAtPosition(position)).getId();
             setNewFragment(FrgmType.fAlbum);
         }
     };
@@ -170,12 +137,25 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;
-            focusedTrack = (Track) lv.getItemAtPosition(position);
+            long trackId = ((Track) lv.getItemAtPosition(position)).getId();
 
-            // インテントのインスタンス生成
             Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-            // トラックIDの受け渡し
-            intent.putExtra("track", focusedTrack.getId());
+            // PLAYアクティビティへ値の受け渡し
+            intent.putExtra("TRACK_ID", trackId);   // トラックID
+            // PLAYアクティビティ起動
+            startActivity(intent);
+        }
+    };
+
+    /* ALLPLAYボタンクリック時の処理 */
+    private OnClickListener allPlayClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            // PLAYアクティビティへ値の受け渡し
+            intent.putExtra("ALBUM_ID", albumId);   // アルバムID
+            intent.putExtra("ARTIST_ID", artistId); // アーティストID
             // PLAYアクティビティ起動
             startActivity(intent);
         }

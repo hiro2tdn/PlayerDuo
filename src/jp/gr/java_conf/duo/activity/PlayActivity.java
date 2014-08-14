@@ -31,21 +31,47 @@ public class PlayActivity extends FragmentActivity {
         // 再生するトラックを取得
         Intent intent = getIntent();
 
-        long artistId = intent.getLongExtra("artist", -1);
-        long albumId = intent.getLongExtra("album", -1);
-        long trackid = intent.getLongExtra("track", -1);
+        long trackId = intent.getLongExtra("TRACK_ID", 0);
+        long albumId = intent.getLongExtra("ALBUM_ID", 0);
+        long artistId = intent.getLongExtra("ARTIST_ID", 0);
 
-        if (artistId != -1) {
-            tracks = Track.getItemsByArtistId(this, artistId);
-        } else if (albumId != -1) {
-            tracks = Track.getItemsByAlbumId(this, albumId);
-        } else if (trackid != -1) {
+        // 前アクティビティからの値の受取含め、いい書き方に直したい
+        if (trackId != 0) {
             tracks = new ArrayList<Track>();
-            tracks.add(Track.getItemsByTrackId(this, trackid));
+            tracks.add(Track.getItemByTrackId(this, trackId));
+        } else if (albumId != 0) {
+            tracks = Track.getItemsByAlbumId(this, albumId);
+        } else if (artistId != 0) {
+            tracks = Track.getItemsByArtistId(this, artistId);
         } else {
             tracks = Track.getItems(this);
         }
 
+        // PLAYボタンの動作設定
+        findViewById(R.id.playButton).setOnClickListener(playClickListener);
+
+        // STOPボタンの動作設定
+        findViewById(R.id.stopButton).setOnClickListener(stopClickListener);
+
+        // MeidaPlayerの動作設定
+        mp = new MediaPlayer();
+        mp.setOnCompletionListener(playCompListener);
+        mp.setOnPreparedListener(playPreparedListener);
+        mp.setOnErrorListener(playErrorListener);
+
+        // 再生
+        playMusic();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mp != null) {
+            mp.reset();
+            mp.release();
+        }
+    }
+    private void playMusic() {
         // タイトル
         TextView track_title = (TextView) findViewById(R.id.title);
         track_title.setText(tracks.get(position).getTitle());
@@ -62,43 +88,22 @@ public class PlayActivity extends FragmentActivity {
         TextView track_lyrics = (TextView) findViewById(R.id.lyrics);
         track_lyrics.setText(tracks.get(position).getLyrics());
 
-        // PLAYボタンの動作設定
-        findViewById(R.id.playButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mp != null) {
-                    mp.release();
-                }
-                mp = new MediaPlayer();
-                mp.setOnCompletionListener(playCompListener);
-                mp.setOnPreparedListener(playPreparedListener);
-                mp.setOnErrorListener(playErrorListener);
+        mp.reset();
+        try {
+            mp.setDataSource(getApplicationContext(), tracks.get(position).getUri());
+            mp.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                try {
-                    mp.setDataSource(getApplicationContext(), tracks.get(position).getUri());
-                    mp.prepare();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        // STOPボタンの動作設定
-        findViewById(R.id.stopButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mp != null) {
-                    mp.pause();
-                }
-            }
-        });
     }
 
     /* 演奏の準備が完了したら呼ばれる。 */
     private OnPreparedListener playPreparedListener = new OnPreparedListener() {
         @Override
-        public void onPrepared(MediaPlayer ThisMP) {
-            if (mp == ThisMP) {
+        public void onPrepared(MediaPlayer mp) {
+            if (mp != null) {
+                mp.seekTo(0);
                 mp.start();
             }
         }
@@ -107,18 +112,41 @@ public class PlayActivity extends FragmentActivity {
     /* 演奏が終了したら呼ばれる。 */
     private OnCompletionListener playCompListener = new OnCompletionListener() {
         @Override
-        public void onCompletion(MediaPlayer ThisMP) {
-            if (mp == ThisMP) {
-                mp.release();
+        public void onCompletion(MediaPlayer mp) {
+            // TODO 常に全曲リピートなのを何とかする
+            if (position >= tracks.size() - 1) {
+                position = 0;
+            } else {
+                position++;
             }
+
+            playMusic();
         }
     };
 
     /* エラーが発生した時に呼ばれる。 */
     private OnErrorListener playErrorListener = new OnErrorListener() {
         @Override
-        public boolean onError(MediaPlayer ThisMP, int what, int extra) {
+        public boolean onError(MediaPlayer mp, int what, int extra) {
             return false;
+        }
+    };
+
+    /* PLAYボタンクリック時の処理 */
+    private OnClickListener playClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            playMusic();
+        }
+    };
+
+    /* STOPボタンクリック時の処理 */
+    private OnClickListener stopClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mp != null) {
+                mp.stop();
+            }
         }
     };
 }

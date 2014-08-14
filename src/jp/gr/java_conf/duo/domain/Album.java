@@ -18,7 +18,7 @@ public class Album {
     private int tracks;
 
     /* アルバム取得時に取得する情報 */
-    public static final String[] FILLED_PROJECTION = {
+    public static final String[] COLUMNS = {
         MediaStore.Audio.Albums._ID,
         MediaStore.Audio.Albums.ALBUM,
         MediaStore.Audio.Albums.ALBUM_ART,
@@ -88,7 +88,7 @@ public class Album {
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                Album.FILLED_PROJECTION,
+                Album.COLUMNS,
                 null,
                 null,
                 "ALBUM  ASC");
@@ -103,13 +103,13 @@ public class Album {
     }
 
     /* 指定されたアーティストのアルバム取得 */
-    public static List<Album> getItemsByArtistId(Context activity, long artistId) {
+    public static List<Album> getItemsByArtistId(Context activity, long id) {
         ContentResolver resolver = activity.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                Album.FILLED_PROJECTION,
+                Album.COLUMNS,
                 MediaStore.Audio.Media.ARTIST_ID + "= ?",
-                new String[] { String.valueOf(artistId) },
+                new String[] { String.valueOf(id) },
                 "ALBUM  ASC");
 
         List<Album> albums = new ArrayList<Album>();
@@ -119,5 +119,21 @@ public class Album {
 
         cursor.close();
         return albums;
+    }
+
+    /* 指定されたアルバム取得 */
+    public static Album getItemByAlbumId(Context activity, long id) {
+        ContentResolver resolver = activity.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                Album.COLUMNS,
+                MediaStore.Audio.Albums._ID + "= ?",
+                new String[] { String.valueOf(id) },
+                null);
+
+        cursor.moveToNext();
+        Album album = new Album(cursor);
+        cursor.close();
+        return album;
     }
 }

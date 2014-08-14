@@ -19,12 +19,21 @@ import android.widget.TextView;
 
 /* 選択アルバムのトラックフラグメント */
 public class AlbumTrackFragment extends Fragment {
+
+    long albumId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.album_track, container, false);
         MainActivity activity = (MainActivity) super.getActivity();
-        Album album = activity.getFocusedAlbum();
+
+        // アクティビティからID取得。無い場合、保存値を取得（画面回転対策）
+        albumId = activity.getAlbumId();
+        if (albumId == 0) {
+            albumId = savedInstanceState.getLong("ALBUM_ID");
+        }
+        Album album = Album.getItemByAlbumId(activity, albumId);
 
         // タイトル
         TextView album_title = (TextView) view.findViewById(R.id.title);
@@ -56,5 +65,11 @@ public class AlbumTrackFragment extends Fragment {
         trackList.setOnItemClickListener(activity.trackClickListener);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      outState.putLong("ALBUM_ID", albumId);
     }
 }
