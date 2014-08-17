@@ -4,9 +4,9 @@ import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.domain.Album;
 import jp.gr.java_conf.duo.domain.Artist;
 import jp.gr.java_conf.duo.domain.Track;
-import jp.gr.java_conf.duo.fragment.AlbumsFragment;
+import jp.gr.java_conf.duo.fragment.ListAlbumFragment;
 import jp.gr.java_conf.duo.fragment.RootMenuFragment;
-import jp.gr.java_conf.duo.fragment.TracksFragment;
+import jp.gr.java_conf.duo.fragment.ListTrackFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -108,10 +108,10 @@ public class MainActivity extends FragmentActivity {
             ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
             break;
         case fAlbum:
-            ft.replace(R.id.root, new TracksFragment(), "fAlbum");
+            ft.replace(R.id.root, new ListTrackFragment(), "fAlbum");
             break;
         case fArtist:
-            ft.replace(R.id.root, new AlbumsFragment(), "fArtist");
+            ft.replace(R.id.root, new ListAlbumFragment(), "fArtist");
             break;
         }
 

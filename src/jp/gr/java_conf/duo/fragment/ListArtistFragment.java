@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-/* アーティストフラグメント */
-public class ArtistsFragment extends Fragment {
+/* アーティストリストフラグメント */
+public class ListArtistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.artists, container, false);
+        View view = inflater.inflate(R.layout.list_artist, container, false);
         MainActivity activity = (MainActivity) super.getActivity();
 
         // アーティストリスト

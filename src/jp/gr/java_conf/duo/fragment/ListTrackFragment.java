@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-/* トラックフラグメント */
-public class TracksFragment extends Fragment {
+/* トラックリストフラグメント */
+public class ListTrackFragment extends Fragment {
 
     private long albumId;
 
@@ -22,7 +22,7 @@ public class TracksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.tracks, container, false);
+        View view = inflater.inflate(R.layout.list_track, container, false);
         MainActivity activity = (MainActivity) super.getActivity();
 
         // アクティビティからID取得、または、OSによる停止時の値を復元
