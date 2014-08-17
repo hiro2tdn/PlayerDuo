@@ -136,7 +136,8 @@ public class Track {
 
     public String getLyrics() {
         if (lyrics == null) {
-            // TODO ファイルタイプの判定を入れたい
+            lyrics = "";
+            // MP4限定で歌詞取得
             try {
                 AudioFile f = AudioFileIO.read(new File(path));
                 Mp4Tag mp4tag = (Mp4Tag) f.getTag();

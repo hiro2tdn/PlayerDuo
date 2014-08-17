@@ -18,8 +18,8 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"
-            android:textSize="20sp" />
+            android:text="@string/title"
+        	android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <LinearLayout
 	        android:layout_width="match_parent"
@@ -30,14 +30,16 @@
 	            android:id="@+id/artist"
 	            android:layout_width="0dip"
 	            android:layout_height="wrap_content"
-            android:layout_weight="1"
-	            android:text="artist" />
+            	android:layout_weight="1"
+	            android:text="@string/artist"
+        		android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	   		<TextView
 	            android:id="@+id/tracks"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="tracks" />
+	            android:text="@string/tracks"
+        		android:textAppearance="?android:attr/textAppearanceSmall" />
 
    		</LinearLayout>
 
@@ -50,13 +52,15 @@
 	            android:layout_width="0dip"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="album" />
+	            android:text="@string/album"
+        		android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	        <TextView
 	            android:id="@+id/duration"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="0:00" />
+	            android:text="@string/duration"
+        		android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
        	<View
@@ -72,8 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:text="lyrics"
-            android:textSize="20sp" />
+            android:text="@string/lyrics"
+        	android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,32 +87,36 @@
         android:background="#000000" >
 
         <Button
-            android:id="@+id/leftButton"
+            android:id="@+id/btn_left"
+            style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="&lt;" />
+            android:text="@string/back" />
 
         <Button
-            android:id="@+id/playButton"
+            android:id="@+id/btn_play"
+            style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="PLAY" />
+            android:text="@string/play" />
 
         <Button
-            android:id="@+id/stopButton"
+            android:id="@+id/btn_stop"
+            style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="STOP" />
+            android:text="@string/stop" />
 
         <Button
-            android:id="@+id/rightButton"
+            android:id="@+id/btn_right"
+            style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text=">" />
+            android:text="@string/next" />
 
     </LinearLayout>
 

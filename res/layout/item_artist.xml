@@ -8,19 +8,21 @@
         android:id="@+id/artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="artist"
-        android:textSize="20sp" />
+        android:text="@string/artist"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/albums"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="albums" />
+        android:text="@string/albums"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/tracks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="tracks" />
+        android:text="@string/tracks"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

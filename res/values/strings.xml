@@ -3,11 +3,32 @@
     <string name="app_name">PlayerDuo</string>
     <string name="action_settings">設定</string>
 
+    <!-- Home -->
+    <string name="home_desc">出来る事\n・ContentProviderの音楽再生\n・MP4の歌詞表示</string>
+	<string name="scan_sdcard">Scan SD Card</string>
+
+	<!-- Pager -->
+    <string name="home">Home</string>
     <string name="artist">Artist</string>
     <string name="album">Album</string>
     <string name="track">Track</string>
 
-    <!-- 日本語では常にotherになる -->
+    <!-- Button -->
+    <string name="all_play">ALL PLAY</string>
+    <string name="play">PLAY</string>
+    <string name="stop">STOP</string>
+    <string name="back">&lt;</string>
+    <string name="next">&gt;</string>
+
+    <!-- Other -->
+	<string name="title">Title</string>
+    <string name="albums">Albums</string>
+    <string name="tracks">Tracks</string>
+	<string name="lyrics">Lyrics</string>
+	<string name="duration">0:00</string>
+	<string name="no_image_desc">No Image</string>
+
+    <!-- 複数形対応。日本語では常にotherになるので無意味 -->
 	<plurals name="artists">
         <item quantity="one">%1$d Artist</item>
         <item quantity="other">%1$d Artists</item>

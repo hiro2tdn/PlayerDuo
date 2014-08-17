@@ -45,12 +45,15 @@ public class RootMenuFragment extends Fragment {
             Fragment fragment = null;
             switch (position) {
             case 0:
-                fragment = new ListArtistFragment();
+                fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new ListAlbumFragment();
+                fragment = new ListArtistFragment();
                 break;
             case 2:
+                fragment = new ListAlbumFragment();
+                break;
+            case 3:
                 fragment = new ListTrackFragment();
                 break;
             }
@@ -59,17 +62,19 @@ public class RootMenuFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
             case 0:
-                return getString(R.string.artist);
+                return getString(R.string.home);
             case 1:
-                return getString(R.string.album);
+                return getString(R.string.artist);
             case 2:
+                return getString(R.string.album);
+            case 3:
                 return getString(R.string.track);
             }
             return null;

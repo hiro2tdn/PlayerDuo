@@ -5,6 +5,7 @@ import java.util.List;
 
 import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.domain.Track;
+import jp.gr.java_conf.duo.fragment.ListTrackFragment;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -18,24 +19,27 @@ import android.widget.TextView;
 /* PLAYアクティビティ */
 public class PlayActivity extends FragmentActivity {
 
-    private MediaPlayer mp;
-    private List<Track> trackList;
-    private int position;
-    private boolean flgPlay;
+    private static final String SLASH = "/";
+    private static final String BUNDLE_POSITION = "POSITION";
+    // private static final String BUNDLE_FLG_PLAY = "FLG_PLAY";
+
+    private MediaPlayer mp = null;
+    private List<Track> trackList = null;
+    private int position = 0;
+    private boolean flgPlay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        // 再生するトラックを取得
+        // MainActivityから値の受取
         Intent intent = getIntent();
+        long trackId = intent.getLongExtra(ListTrackFragment.EXTRA_TRACK_ID, 0);
+        long albumId = intent.getLongExtra(MainActivity.EXTRA_ALBUM_ID, 0);
+        long artistId = intent.getLongExtra(MainActivity.EXTRA_ARTIST_ID, 0);
 
-        long trackId = intent.getLongExtra("TRACK_ID", 0);
-        long albumId = intent.getLongExtra("ALBUM_ID", 0);
-        long artistId = intent.getLongExtra("ARTIST_ID", 0);
-
-        // TODO 前アクティビティからの値の受取含め、いい書き方に直したい
+        // トラックリストの取得
         if (trackId != 0) {
             trackList = new ArrayList<Track>();
             trackList.add(Track.getItemByTrackId(this, trackId));
@@ -47,28 +51,31 @@ public class PlayActivity extends FragmentActivity {
             trackList = Track.getItems(this);
         }
 
-        // 初期化、または、OSによる停止時の値を復元
-        if (savedInstanceState == null) {
-            position = 0;
-            flgPlay = false;
-        } else  {
-            position = savedInstanceState.getInt("POSITION");
-            flgPlay = savedInstanceState.getBoolean("FLG_PLAY");
-        }
-
         // TextViewの設定
         setTextView();
 
         // ボタンの動作設定
-        findViewById(R.id.playButton).setOnClickListener(playClickListener);
-        findViewById(R.id.stopButton).setOnClickListener(stopClickListener);
-        findViewById(R.id.leftButton).setOnClickListener(leftClickListener);
-        findViewById(R.id.rightButton).setOnClickListener(rightClickListener);
+        findViewById(R.id.btn_play).setOnClickListener(mPlayClickListener);
+        findViewById(R.id.btn_stop).setOnClickListener(mStopClickListener);
+        findViewById(R.id.btn_left).setOnClickListener(mLeftClickListener);
+        findViewById(R.id.btn_right).setOnClickListener(mRrightClickListener);
 
         // MediaPlayerの動作設定
         mp = new MediaPlayer();
-        mp.setOnCompletionListener(playCompListener);
-        mp.setOnPreparedListener(playPreparedListener);
+        mp.setOnCompletionListener(mPlayCompListener);
+        mp.setOnPreparedListener(mPlayPreparedListener);
+
+        // 初期化、または、OSによる停止時の値を復元
+        if (savedInstanceState == null) {
+            position = 0;
+            // flgPlay = true;
+        } else  {
+            position = savedInstanceState.getInt(BUNDLE_POSITION);
+            // flgPlay = savedInstanceState.getBoolean(BUNDLE_FLG_PLAY);
+        }
+
+        // 最初の曲を再生する
+        playMusic();
     }
 
     /* 戻るボタン押下時の処理 */
@@ -88,8 +95,8 @@ public class PlayActivity extends FragmentActivity {
         super.onSaveInstanceState(outState);
 
         // 現在のインスタンス変数を保存
-        outState.putInt("POSITION", position);
-        outState.putBoolean("FLG_PLAY", flgPlay);
+        outState.putInt(BUNDLE_POSITION, position);
+        // outState.putBoolean(BUNDLE_FLG_PLAY, flgPlay);
     }
 
     /* TextViewの設定 */
@@ -99,7 +106,7 @@ public class PlayActivity extends FragmentActivity {
         ((TextView) findViewById(R.id.artist)).setText(track.getArtist());
         ((TextView) findViewById(R.id.album)).setText(track.getAlbum());
         ((TextView) findViewById(R.id.duration)).setText(track.getStrDuration());
-        String strTracks = new StringBuffer().append(position + 1).append("/").append(trackList.size()).toString();
+        String strTracks = new StringBuffer().append(position + 1).append(SLASH).append(trackList.size()).toString();
         ((TextView) findViewById(R.id.tracks)).setText(strTracks);
         ((TextView) findViewById(R.id.lyrics)).setText(track.getLyrics());
     }
@@ -107,6 +114,7 @@ public class PlayActivity extends FragmentActivity {
     /* 曲を再生する */
     private void playMusic() {
         // 曲の設定・準備
+        flgPlay = true;
         mp.reset();
         try {
             mp.setDataSource(getApplicationContext(), trackList.get(position).getUri());
@@ -118,7 +126,7 @@ public class PlayActivity extends FragmentActivity {
     }
 
     /* MediaPlayerの演奏準備が完了した時の処理 */
-    private OnPreparedListener playPreparedListener = new OnPreparedListener() {
+    private OnPreparedListener mPlayPreparedListener = new OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mp) {
             // 0秒目から曲を再生する
@@ -130,10 +138,9 @@ public class PlayActivity extends FragmentActivity {
     };
 
     /* MediaPlayerの演奏が終了した時の処理 */
-    private OnCompletionListener playCompListener = new OnCompletionListener() {
+    private OnCompletionListener mPlayCompListener = new OnCompletionListener() {
         @Override
-        public void onCompletion(MediaPlayer thisMp) {
-
+        public void onCompletion(MediaPlayer mp) {
             // 次の曲を再生する
             if (flgPlay) {
                 if (position >= trackList.size() - 1) {
@@ -145,36 +152,35 @@ public class PlayActivity extends FragmentActivity {
                 // TextViewの設定
                 setTextView();
 
-                // 曲を再生する
+                // 次の曲を再生する
                 playMusic();
             }
         }
     };
 
     /* PLAYボタンクリック時の処理 */
-    private OnClickListener playClickListener = new OnClickListener() {
+    private OnClickListener mPlayClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            // 曲を再生する
-            flgPlay = true;
+            // 現在の曲を再生する
             playMusic();
         }
     };
 
     /* STOPボタンクリック時の処理 */
-    private OnClickListener stopClickListener = new OnClickListener() {
+    private OnClickListener mStopClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            flgPlay = false;
             // 曲を停止する
             if (mp != null && mp.isPlaying()) {
-                flgPlay = false;
                 mp.stop();
             }
         }
     };
 
     /* LEFTボタンクリック時の処理 */
-    private OnClickListener leftClickListener = new OnClickListener() {
+    private OnClickListener mLeftClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             // 前の曲に遷移する
@@ -187,7 +193,7 @@ public class PlayActivity extends FragmentActivity {
             // TextViewの設定
             setTextView();
 
-            // 再生中の場合、曲を再生する
+            // 再生中の場合、前の曲を再生する
             if (mp != null && mp.isPlaying()) {
                 playMusic();
             }
@@ -195,10 +201,9 @@ public class PlayActivity extends FragmentActivity {
     };
 
     /* RIGHTボタンクリック時の処理 */
-    private OnClickListener rightClickListener = new OnClickListener() {
+    private OnClickListener mRrightClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
             // 次の曲に遷移する
             if (position >= trackList.size() - 1) {
                 position = 0;
@@ -209,7 +214,7 @@ public class PlayActivity extends FragmentActivity {
             // TextViewの設定
             setTextView();
 
-            // 再生中の場合、曲を再生する
+            // 再生中の場合、次の曲を再生する
             if (mp != null && mp.isPlaying()) {
                 playMusic();
             }
