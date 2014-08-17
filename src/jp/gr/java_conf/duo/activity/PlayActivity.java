@@ -47,11 +47,11 @@ public class PlayActivity extends FragmentActivity {
             tracks = Track.getItems(this);
         }
 
-        // PLAYボタンの動作設定
+        // ボタンの動作設定
         findViewById(R.id.playButton).setOnClickListener(playClickListener);
-
-        // STOPボタンの動作設定
         findViewById(R.id.stopButton).setOnClickListener(stopClickListener);
+        findViewById(R.id.leftButton).setOnClickListener(leftClickListener);
+        findViewById(R.id.rightButton).setOnClickListener(rightClickListener);
 
         // MeidaPlayerの動作設定
         mp = new MediaPlayer();
@@ -147,6 +147,34 @@ public class PlayActivity extends FragmentActivity {
             if (mp != null) {
                 mp.stop();
             }
+        }
+    };
+
+    /* LEFTボタンクリック時の処理 */
+    private OnClickListener leftClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (position <= 0) {
+                position = tracks.size() - 1;
+            } else {
+                position--;
+            }
+
+            playMusic();
+        }
+    };
+
+    /* RIGHTボタンクリック時の処理 */
+    private OnClickListener rightClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (position >= tracks.size() - 1) {
+                position = 0;
+            } else {
+                position++;
+            }
+
+            playMusic();
         }
     };
 }
