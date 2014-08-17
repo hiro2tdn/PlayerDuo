@@ -67,7 +67,7 @@ public class ListTrackFragment extends Fragment {
     }
 
     /* トラッククリック時の処理 */
-    public OnItemClickListener mTrackClickListener = new OnItemClickListener() {
+    private OnItemClickListener mTrackClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView) parent;

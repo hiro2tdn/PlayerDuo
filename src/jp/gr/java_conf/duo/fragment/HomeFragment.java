@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
     }
 
     /* Scan SD Cardボタンクリック時の処理 */
-    public OnClickListener mScanClickListener = new OnClickListener() {
+    private OnClickListener mScanClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             String _url = "file://" + Environment.getExternalStorageDirectory();
