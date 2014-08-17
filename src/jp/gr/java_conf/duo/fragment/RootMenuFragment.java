@@ -45,13 +45,13 @@ public class RootMenuFragment extends Fragment {
             Fragment fragment = null;
             switch (position) {
             case 0:
-                fragment = new AllArtistsFragment();
+                fragment = new ArtistsFragment();
                 break;
             case 1:
-                fragment = new AllAlbumsFragment();
+                fragment = new AlbumsFragment();
                 break;
             case 2:
-                fragment = new AllTracksFragment();
+                fragment = new TracksFragment();
                 break;
             }
             return fragment;

@@ -19,11 +19,13 @@ public class ListTrackAdapter extends ArrayAdapter<Track> {
     private static class ViewHolder {
         TextView titleTextView;
         TextView artistTextView;
+        TextView albumTextView;
         TextView durationTextView;
 
         public ViewHolder(View view) {
             titleTextView = (TextView) view.findViewById(R.id.title);
             artistTextView = (TextView) view.findViewById(R.id.artist);
+            albumTextView = (TextView) view.findViewById(R.id.album);
             durationTextView = (TextView) view.findViewById(R.id.duration);
         }
     }
@@ -43,6 +45,7 @@ public class ListTrackAdapter extends ArrayAdapter<Track> {
         Track track = getItem(position);
         holder.titleTextView.setText(track.getTitle());
         holder.artistTextView.setText(track.getArtist());
+        holder.albumTextView.setText(track.getAlbum());
         holder.durationTextView.setText(track.getStrDuration());
 
         return convertView;

@@ -13,21 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-/* 全アーティストフラグメント */
-public class AllArtistsFragment extends Fragment {
+/* アーティストフラグメント */
+public class ArtistsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.all_artists, container, false);
+        View view = inflater.inflate(R.layout.artists, container, false);
         MainActivity activity = (MainActivity) super.getActivity();
 
         // アーティストリスト
-        List<Artist> artists = Artist.getItems(activity);
-        ListArtistAdapter adapter = new ListArtistAdapter(activity, artists);
-        ListView artistList = (ListView) view.findViewById(R.id.list);
-        artistList.setAdapter(adapter);
-        artistList.setOnItemClickListener(activity.artistClickListener);
+        List<Artist> artistList = Artist.getItems(activity);
+        ListArtistAdapter adapter = new ListArtistAdapter(activity, artistList);
+        ListView artistListView = (ListView) view.findViewById(R.id.list);
+        artistListView.setAdapter(adapter);
+        artistListView.setOnItemClickListener(activity.artistClickListener);
 
         return view;
     }

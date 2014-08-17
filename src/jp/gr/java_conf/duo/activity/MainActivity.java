@@ -4,9 +4,9 @@ import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.domain.Album;
 import jp.gr.java_conf.duo.domain.Artist;
 import jp.gr.java_conf.duo.domain.Track;
-import jp.gr.java_conf.duo.fragment.AlbumTrackFragment;
-import jp.gr.java_conf.duo.fragment.ArtistAlbumFragment;
+import jp.gr.java_conf.duo.fragment.AlbumsFragment;
 import jp.gr.java_conf.duo.fragment.RootMenuFragment;
+import jp.gr.java_conf.duo.fragment.TracksFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -54,12 +54,17 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        // Fragmentを作成、または、OSによる停止時の値を復元
+        if(null == savedInstanceState){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
 
-        // TODO 画面回転すると最初のフラグメントに戻るのを直したい
-        ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
-        ft.commit();
+            ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
+            ft.commit();
+        } else {
+            albumId = savedInstanceState.getLong("ALBUM_ID");
+            artistId = savedInstanceState.getLong("ARTIST_ID");
+        }
 
         // ALLPLAYボタンの動作設定
         findViewById(R.id.allPlayButton).setOnClickListener(allPlayClickListener);
@@ -83,6 +88,16 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    /* OSによる停止時の処理 */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // 現在のインスタンス変数を保存
+        outState.putLong("ALBUM_ID", albumId);
+        outState.putLong("ARTIST_ID", artistId);
+    }
+
     /* 指定されたフラグメントに置き換える */
     public void setNewFragment(FrgmType frgmType) {
         FragmentManager fm = getSupportFragmentManager();
@@ -93,10 +108,10 @@ public class MainActivity extends FragmentActivity {
             ft.replace(R.id.root, new RootMenuFragment(), "fRoot");
             break;
         case fAlbum:
-            ft.replace(R.id.root, new AlbumTrackFragment(), "fAlbum");
+            ft.replace(R.id.root, new TracksFragment(), "fAlbum");
             break;
         case fArtist:
-            ft.replace(R.id.root, new ArtistAlbumFragment(), "fArtist");
+            ft.replace(R.id.root, new AlbumsFragment(), "fArtist");
             break;
         }
 

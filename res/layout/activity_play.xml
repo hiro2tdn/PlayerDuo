@@ -4,47 +4,77 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TrackName"
-        android:textSize="20sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/artist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="artist" />
-
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0:00" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/Separator"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp"
-        android:background="#999999" />
-
-    <TextView
-        android:id="@+id/lyrics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="1"
-        android:text="lyrics"
-        android:textSize="20sp" />
+        android:orientation="vertical"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp" >
+
+       	<TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textSize="20sp" />
+
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+
+	    	<TextView
+	            android:id="@+id/artist"
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+            android:layout_weight="1"
+	            android:text="artist" />
+
+	   		<TextView
+	            android:id="@+id/tracks"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="tracks" />
+
+   		</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:id="@+id/album"
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="album" />
+
+	        <TextView
+	            android:id="@+id/duration"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="0:00" />
+        </LinearLayout>
+
+       	<View
+            android:id="@+id/separator"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:background="#999999" />
+
+        <TextView
+            android:id="@+id/lyrics"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:text="lyrics"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/playPanel"

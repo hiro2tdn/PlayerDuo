@@ -22,7 +22,7 @@ public class ListArtistAdapter extends ArrayAdapter<Artist> {
         TextView tracksTextView;
 
         public ViewHolder(View view) {
-            artistTextView = (TextView) view.findViewById(R.id.title);
+            artistTextView = (TextView) view.findViewById(R.id.artist);
             albumsTextView = (TextView) view.findViewById(R.id.albums);
             tracksTextView = (TextView) view.findViewById(R.id.tracks);
         }

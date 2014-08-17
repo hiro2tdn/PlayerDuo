@@ -28,7 +28,7 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
         ImageView artworkImageView;
 
         public ViewHolder(View view) {
-            albumTextView = (TextView) view.findViewById(R.id.title);
+            albumTextView = (TextView) view.findViewById(R.id.album);
             artistTextView = (TextView) view.findViewById(R.id.artist);
             tracksTextView = (TextView) view.findViewById(R.id.tracks);
             artworkImageView = (ImageView) view.findViewById(R.id.albumart);
