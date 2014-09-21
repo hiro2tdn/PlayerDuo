@@ -22,9 +22,9 @@ public class ListArtistAdapter extends ArrayAdapter<Artist> {
         TextView tracksTextView;
 
         public ViewHolder(View view) {
-            artistTextView = (TextView) view.findViewById(R.id.artist);
-            albumsTextView = (TextView) view.findViewById(R.id.albums);
-            tracksTextView = (TextView) view.findViewById(R.id.tracks);
+            artistTextView = (TextView) view.findViewById(R.id.artist_name);
+            albumsTextView = (TextView) view.findViewById(R.id.album_num);
+            tracksTextView = (TextView) view.findViewById(R.id.track_num);
         }
     }
 
@@ -42,8 +42,8 @@ public class ListArtistAdapter extends ArrayAdapter<Artist> {
 
         Artist artist = getItem(position);
         holder.artistTextView.setText(artist.getArtist());
-        holder.albumsTextView.setText(getContext().getResources().getQuantityString(R.plurals.albums, artist.getAlbums(), artist.getAlbums()));
-        holder.tracksTextView.setText(getContext().getResources().getQuantityString(R.plurals.tracks, artist.getTracks(), artist.getTracks()));
+        holder.albumsTextView.setText(getContext().getResources().getQuantityString(R.plurals.album_num, artist.getAlbums(), artist.getAlbums()));
+        holder.tracksTextView.setText(getContext().getResources().getQuantityString(R.plurals.track_num, artist.getTracks(), artist.getTracks()));
 
         return convertView;
     }

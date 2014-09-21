@@ -19,29 +19,29 @@ import android.provider.MediaStore;
 
 public class Track {
 
-    private long id;         // コンテントプロバイダに登録されたID
-    private String path;     // 実データのPATH
-    private String title;    // トラックタイトル
-    private String album;    // アルバムタイトル
-    private String artist;   // アーティスト名
-    private long albumId;    // アルバムID
-    private long artistId;   // アーティストID
-    private long duration;   // 再生時間(ミリ秒)
-    private int trackNo;     // アルバムのトラックナンバ
-    private String lyrics;   // 歌詞
-    private Uri uri;         // URI
+    private long id; // コンテントプロバイダに登録されたID
+    private String path; // 実データのパス
+    private String title; // タイトル
+    private String album; // アルバム名
+    private String artist; // アーティスト名
+    private long albumId; // アルバムID
+    private long artistId; // アーティストID
+    private long duration; // 再生時間(ミリ秒)
+    private int trackNo; // トラック番号
+    private Uri uri; // URI
+    private String lyric; // 歌詞
 
     /* トラック取得時に取得する情報 */
     public static final String[] COLUMNS = {
-        MediaStore.Audio.Media._ID,
-        MediaStore.Audio.Media.DATA,
-        MediaStore.Audio.Media.TITLE,
-        MediaStore.Audio.Media.ALBUM,
-        MediaStore.Audio.Media.ARTIST,
-        MediaStore.Audio.Media.ALBUM_ID,
-        MediaStore.Audio.Media.ARTIST_ID,
-        MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.TRACK};
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST_ID,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.TRACK };
 
     public Track(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
@@ -116,7 +116,7 @@ public class Track {
         return duration;
     }
 
-	public String getStrDuration(){
+    public String getViewDuration() {
         long dm = duration / 60000;
         long ds = (duration - (dm * 60000)) / 1000;
         return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
@@ -134,27 +134,6 @@ public class Track {
         this.trackNo = trackNo;
     }
 
-    public String getLyrics() {
-        if (lyrics == null) {
-            lyrics = "";
-            // MP4限定で歌詞取得
-            try {
-                AudioFile f = AudioFileIO.read(new File(path));
-                Mp4Tag mp4tag = (Mp4Tag) f.getTag();
-                lyrics = mp4tag.getFirst(Mp4FieldKey.LYRICS);
-                lyrics = lyrics.replaceAll("\r", "\n");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return lyrics;
-    }
-
-    public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
-    }
-
     public Uri getUri() {
         return uri;
     }
@@ -163,15 +142,30 @@ public class Track {
         this.uri = uri;
     }
 
+    public String getLyric() {
+        if (lyric == null) {
+            lyric = "";
+            try {
+                // MP4限定で歌詞取得
+                AudioFile f = AudioFileIO.read(new File(path));
+                Mp4Tag mp4tag = (Mp4Tag) f.getTag();
+                lyric = mp4tag.getFirst(Mp4FieldKey.LYRICS).replaceAll("\r", "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return lyric;
+    }
+
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
+    }
+
     /* 全トラック取得 */
     public static List<Track> getItems(Context activity) {
         ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Track.COLUMNS,
-                null,
-                null,
-                null);
+        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, null, null, null);
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
@@ -189,12 +183,7 @@ public class Track {
     /* 指定されたアーティストのトラック取得 */
     public static List<Track> getItemsByArtistId(Context activity, long id) {
         ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Track.COLUMNS,
-                MediaStore.Audio.Media.ARTIST_ID + "= ?",
-                new String[] { String.valueOf(id) },
-                null);
+        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media.ARTIST_ID + "= ?", new String[] { String.valueOf(id) }, null);
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
@@ -208,12 +197,7 @@ public class Track {
     /* 指定されたアルバムのトラック取得 */
     public static List<Track> getItemsByAlbumId(Context activity, long id) {
         ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Track.COLUMNS,
-                MediaStore.Audio.Media.ALBUM_ID + "= ?",
-                new String[] { String.valueOf(id) },
-                null);
+        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media.ALBUM_ID + "= ?", new String[] { String.valueOf(id) }, null);
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
@@ -227,12 +211,7 @@ public class Track {
     /* 指定されたトラック取得 */
     public static Track getItemByTrackId(Context activity, long id) {
         ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Track.COLUMNS,
-                MediaStore.Audio.Media._ID + "= ?",
-                new String[] { String.valueOf(id) },
-                null);
+        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media._ID + "= ?", new String[] { String.valueOf(id) }, null);
 
         cursor.moveToNext();
         Track track = new Track(cursor);

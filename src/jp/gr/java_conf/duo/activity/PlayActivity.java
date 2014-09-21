@@ -69,7 +69,7 @@ public class PlayActivity extends FragmentActivity {
         if (savedInstanceState == null) {
             position = 0;
             // flgPlay = true;
-        } else  {
+        } else {
             position = savedInstanceState.getInt(BUNDLE_POSITION);
             // flgPlay = savedInstanceState.getBoolean(BUNDLE_FLG_PLAY);
         }
@@ -102,13 +102,13 @@ public class PlayActivity extends FragmentActivity {
     /* TextViewの設定 */
     private void setTextView() {
         Track track = trackList.get(position);
-        ((TextView) findViewById(R.id.title)).setText(track.getTitle());
-        ((TextView) findViewById(R.id.artist)).setText(track.getArtist());
-        ((TextView) findViewById(R.id.album)).setText(track.getAlbum());
-        ((TextView) findViewById(R.id.duration)).setText(track.getStrDuration());
-        String strTracks = new StringBuffer().append(position + 1).append(SLASH).append(trackList.size()).toString();
-        ((TextView) findViewById(R.id.tracks)).setText(strTracks);
-        ((TextView) findViewById(R.id.lyrics)).setText(track.getLyrics());
+        ((TextView) findViewById(R.id.track_name)).setText(track.getTitle());
+        ((TextView) findViewById(R.id.artist_name)).setText(track.getArtist());
+        ((TextView) findViewById(R.id.album_name)).setText(track.getAlbum());
+        ((TextView) findViewById(R.id.duration)).setText(track.getViewDuration());
+        ((TextView) findViewById(R.id.track_no)).setText(
+                new StringBuffer().append(position + 1).append(SLASH).append(trackList.size()));
+        ((TextView) findViewById(R.id.lyric)).setText(track.getLyric());
     }
 
     /* 曲を再生する */

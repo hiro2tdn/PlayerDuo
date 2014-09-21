@@ -10,12 +10,12 @@ import android.provider.MediaStore;
 
 public class Album {
 
-    private long id;
-    private String album;
-    private String albumArt;
-    private String albumKey;
-    private String artist;
-    private int tracks;
+    private long id;            // アルバムID
+    private String album;       // アルバム名
+    private String albumArt;    // アルバムアートのパス
+    private String albumKey;    // アルバムキー
+    private String artist;      // アルバムのアーティスト名
+    private int tracks;         // アルバムのトラック数
 
     /* アルバム取得時に取得する情報 */
     public static final String[] COLUMNS = {

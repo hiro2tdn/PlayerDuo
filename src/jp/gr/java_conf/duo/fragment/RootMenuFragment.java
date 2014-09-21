@@ -71,11 +71,11 @@ public class RootMenuFragment extends Fragment {
             case 0:
                 return getString(R.string.home);
             case 1:
-                return getString(R.string.artist);
+                return getString(R.string.artists);
             case 2:
-                return getString(R.string.album);
+                return getString(R.string.albums);
             case 3:
-                return getString(R.string.track);
+                return getString(R.string.tracks);
             }
             return null;
         }

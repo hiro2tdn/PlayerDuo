@@ -28,9 +28,9 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
         ImageView artworkImageView;
 
         public ViewHolder(View view) {
-            albumTextView = (TextView) view.findViewById(R.id.album);
-            artistTextView = (TextView) view.findViewById(R.id.artist);
-            tracksTextView = (TextView) view.findViewById(R.id.tracks);
+            albumTextView = (TextView) view.findViewById(R.id.album_name);
+            artistTextView = (TextView) view.findViewById(R.id.artist_name);
+            tracksTextView = (TextView) view.findViewById(R.id.track_num);
             artworkImageView = (ImageView) view.findViewById(R.id.albumart);
         }
     }
@@ -50,7 +50,7 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
         Album album = getItem(position);
         holder.albumTextView.setText(album.getAlbum());
         holder.artistTextView.setText(album.getArtist());
-        holder.tracksTextView.setText(getContext().getResources().getQuantityString(R.plurals.tracks, album.getTracks(), album.getTracks()));
+        holder.tracksTextView.setText(getContext().getResources().getQuantityString(R.plurals.track_num, album.getTracks(), album.getTracks()));
 
         String path = album.getAlbumArt();
         holder.artworkImageView.setImageResource(R.drawable.dummy_album_art_slim_gray);

@@ -19,25 +19,25 @@
         android:paddingLeft="3dp" >
 
         <TextView
-            android:id="@+id/album"
+            android:id="@+id/album_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/album"
-        	android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="@string/dummy_album_name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/artist"
+            android:id="@+id/artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/artist"
-        	android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/dummy_artist_name"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/tracks"
+            android:id="@+id/track_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tracks"
-        	android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/dummy_track_num"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
 

@@ -8,10 +8,10 @@
 	<string name="scan_sdcard">Scan SD Card</string>
 
 	<!-- Pager -->
-    <string name="home">Home</string>
-    <string name="artist">Artist</string>
-    <string name="album">Album</string>
-    <string name="track">Track</string>
+    <string name="home">ホーム</string>
+    <string name="artists">アーティスト</string>
+    <string name="albums">アルバム</string>
+    <string name="tracks">トラック</string>
 
     <!-- Button -->
     <string name="all_play">ALL PLAY</string>
@@ -21,24 +21,21 @@
     <string name="next">&gt;</string>
 
     <!-- Other -->
-	<string name="title">Title</string>
-    <string name="albums">Albums</string>
-    <string name="tracks">Tracks</string>
-	<string name="lyrics">Lyrics</string>
-	<string name="duration">0:00</string>
+	<string name="dummy_track_name">トラック名</string>
+	<string name="dummy_artist_name">アーティスト名</string>
+    <string name="dummy_album_name">アルバム名</string>
+   	<string name="dummy_lyric">歌詞</string>
+   	<string name="dummy_album_num">0 アルバム</string>
+   	<string name="dummy_track_num">0 トラック</string>
+  	<string name="dummy_track_no">0/0</string>
+	<string name="dummy_duration">0:00</string>
 	<string name="no_image_desc">No Image</string>
 
-    <!-- 複数形対応。日本語では常にotherになるので無意味 -->
-	<plurals name="artists">
-        <item quantity="one">%1$d Artist</item>
-        <item quantity="other">%1$d Artists</item>
+    <!-- 複数形対応。日本語では常にother -->
+    <plurals name="album_num">
+        <item quantity="other">%1$d アルバム</item>
     </plurals>
-    <plurals name="albums">
-        <item quantity="one">%1$d Album</item>
-        <item quantity="other">%1$d Albums</item>
-    </plurals>
-    <plurals name="tracks">
-        <item quantity="one">%1$d Track</item>
-        <item quantity="other">%1$d Tracks</item>
+    <plurals name="track_num">
+        <item quantity="other">%1$d トラック</item>
     </plurals>
 </resources>
