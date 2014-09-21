@@ -15,28 +15,22 @@ import android.view.View.OnClickListener;
 /* ホーム画面フラグメント */
 public class HomeFragment extends Fragment {
 
-    private MainActivity activity = null;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View view = inflater.inflate(R.layout.home, container, false);
-        activity = (MainActivity) super.getActivity();
+        final MainActivity activity = (MainActivity) super.getActivity();
 
-        // ボタンの動作設定
-        view.findViewById(R.id.btn_scan_sdcard).setOnClickListener(mScanClickListener);
+        // Scan SD Cardボタンの動作設定
+        view.findViewById(R.id.btn_scan_sdcard).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String _url = "file://" + Environment.getExternalStorageDirectory();
+                Uri _uri = Uri.parse(_url);
+                activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
+            }
+        });
 
         return view;
     }
-
-    /* Scan SD Cardボタンクリック時の処理 */
-    private OnClickListener mScanClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String _url = "file://" + Environment.getExternalStorageDirectory();
-            Uri _uri = Uri.parse(_url);
-            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
-        }
-    };
 }

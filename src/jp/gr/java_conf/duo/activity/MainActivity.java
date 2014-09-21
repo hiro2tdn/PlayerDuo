@@ -14,13 +14,18 @@ import android.view.View.OnClickListener;
 /* メインアクティビティ */
 public class MainActivity extends FragmentActivity {
 
+    public static final String[] FLAGMENT_TAGS = {
+        "fRoot",
+        "fArtist",
+        "fAlbum"
+    };
+
+    public static final String EXTRA_POSITION = "POSITION";
     public static final String EXTRA_ALBUM_ID = "ALBUM_ID";
     public static final String EXTRA_ARTIST_ID = "ARTIST_ID";
 
     private static final String BUNDLE_ALBUM_ID = "ALBUM_ID";
     private static final String BUNDLE_ARTIST_ID = "ARTIST_ID";
-
-    private static final String F_ROOT = "fRoot";
 
     private long albumId = 0;
     private long artistId = 0;
@@ -50,20 +55,32 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Fragmentを作成、または、OSによる停止時の値を復元
-        if(null == savedInstanceState){
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-
-            ft.replace(R.id.root, new RootMenuFragment(), F_ROOT);
-            ft.commit();
-        } else {
+        // OSによる停止前の状態があるか
+        if (savedInstanceState != null) {
+            // OSによる停止時の状態を復元
             albumId = savedInstanceState.getLong(BUNDLE_ALBUM_ID);
             artistId = savedInstanceState.getLong(BUNDLE_ARTIST_ID);
+        } else {
+            // Fragmentを作成
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.root, new RootMenuFragment(), FLAGMENT_TAGS[0]);
+            ft.commit();
         }
 
-        // ボタンの動作設定
-        findViewById(R.id.btn_all_play).setOnClickListener(mAllPlayClickListener);
+        // ALL PLAYボタンの動作設定
+        findViewById(R.id.btn_all_play).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                // PLAYアクティビティへ値の受け渡し
+                intent.putExtra(MainActivity.EXTRA_POSITION, 0);    // ポジション
+                intent.putExtra(EXTRA_ALBUM_ID, albumId);           // アルバムID
+                intent.putExtra(EXTRA_ARTIST_ID, artistId);         // アーティストID
+                // PLAYアクティビティ起動
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -72,37 +89,13 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        if (albumId != 0) {
-            albumId = 0;
-        } else if (artistId != 0) {
-            artistId = 0;
-        }
-    }
-
     /* OSによる停止時の処理 */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // 現在のインスタンス変数を保存
+        // 現在の状態を保存
         outState.putLong(BUNDLE_ALBUM_ID, albumId);
         outState.putLong(BUNDLE_ARTIST_ID, artistId);
     }
-
-    /* ALL PLAYボタンクリック時の処理 */
-    private OnClickListener mAllPlayClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-            // PLAYアクティビティへ値の受け渡し
-            intent.putExtra(EXTRA_ALBUM_ID, albumId);   // アルバムID
-            intent.putExtra(EXTRA_ARTIST_ID, artistId); // アーティストID
-            // PLAYアクティビティ起動
-            startActivity(intent);
-        }
-    };
 }

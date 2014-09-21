@@ -73,14 +73,32 @@ public class Artist {
     }
 
     /* 全アーティスト取得 */
-    public static List<Artist> getItems(Context activity) {
-        ContentResolver resolver = activity.getContentResolver();
+    public static List<Artist> getItems(Context context) {
+        return getPrivateItems(context, null, 0);
+    }
+
+    /* 指定されたアーティスト取得 */
+    public static Artist getItemByArtistId(Context context, long id) {
+        String selection = MediaStore.Audio.Artists._ID + "= ?";
+        return getPrivateItems(context, selection, id).get(0);
+    }
+
+    /* アーティスト取得 */
+    private static List<Artist> getPrivateItems(Context context, String selection, long id) {
+        String myselection = null;
+        String[] selectionArgs = null;
+        if (id != 0) {
+            myselection = selection;
+            selectionArgs = new String[] { String.valueOf(id) };
+        }
+
+        ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
                 Artist.COLUMNS,
-                null,
-                null,
-                "ARTIST  ASC");
+                myselection,
+                selectionArgs,
+                "ARTIST ASC");
 
         List<Artist> artists = new ArrayList<Artist>();
         while (cursor.moveToNext()) {
@@ -89,21 +107,5 @@ public class Artist {
 
         cursor.close();
         return artists;
-    }
-
-    /* 指定されたアーティスト取得 */
-    public static Artist getItemByArtistId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                Artist.COLUMNS,
-                MediaStore.Audio.Artists._ID + "= ?",
-                new String[] { String.valueOf(id) },
-                null);
-
-        cursor.moveToNext();
-        Artist artist = new Artist(cursor);
-        cursor.close();
-        return artist;
     }
 }

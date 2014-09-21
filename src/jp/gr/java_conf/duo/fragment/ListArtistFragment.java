@@ -20,42 +20,35 @@ import android.widget.ListView;
 /* アーティストリストフラグメント */
 public class ListArtistFragment extends Fragment {
 
-    private static final String F_ARTIST = "fArtist";
-
-    private MainActivity activity = null;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View view = inflater.inflate(R.layout.list_artist, container, false);
-        activity = (MainActivity) super.getActivity();
+        final MainActivity activity = (MainActivity) super.getActivity();
 
         // アーティストリストの取得
         List<Artist> artistList = Artist.getItems(activity);
         ListArtistAdapter adapter = new ListArtistAdapter(activity, artistList);
+
+        // アーティストリストの設定
         ListView artistListView = (ListView) view.findViewById(R.id.list);
-        artistListView.setAdapter(adapter); // リスト設定
-        artistListView.setOnItemClickListener(mArtistClickListener);   // リスト押下動作設定
+        artistListView.setAdapter(adapter);
+        artistListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView lv = (ListView) parent;
+                activity.setArtistId(((Artist) lv.getItemAtPosition(position)).getId());
+
+                // Fragmentを作成
+                FragmentManager fm = activity.getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.root, new ListAlbumFragment(), MainActivity.FLAGMENT_TAGS[1]);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return view;
     }
-
-    /* アーティストクリック時の処理 */
-    private OnItemClickListener mArtistClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            activity.setArtistId(((Artist) lv.getItemAtPosition(position)).getId());
-            activity.setAlbumId(0);    // 念のためアルバムIDを初期化
-
-            // Fragmentを作成
-            FragmentManager fm = activity.getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.root, new ListAlbumFragment(), F_ARTIST);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    };
 }

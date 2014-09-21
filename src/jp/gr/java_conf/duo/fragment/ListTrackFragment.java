@@ -20,41 +20,54 @@ import android.widget.AdapterView.OnItemClickListener;
 /* トラックリストフラグメント */
 public class ListTrackFragment extends Fragment {
 
-    public static final String EXTRA_TRACK_ID = "TRACK_ID";
-
     private static final String BUNDLE_ALBUM_ID = "ALBUM_ID";
 
-    private MainActivity activity = null;
     private long albumId = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View view = inflater.inflate(R.layout.list_track, container, false);
-        activity = (MainActivity) super.getActivity();
+        final MainActivity activity = (MainActivity) super.getActivity();
 
-        // アクティビティからアルバムID取得、または、OSによる停止時の値を復元
-        if (savedInstanceState == null) {
-            albumId = activity.getAlbumId();
-        } else  {
+        // OSによる停止前の状態があるか
+        if (savedInstanceState != null) {
+            // OSによる停止時の状態を復元
             albumId = savedInstanceState.getLong(BUNDLE_ALBUM_ID);
+        } else {
+            // アクティビティからアルバムID取得
+            albumId = activity.getAlbumId();
         }
 
         // トラックリストの取得
-        List<Track> trackList;
-        if (albumId == 0) {
-            trackList = Track.getItems(activity);
-        } else {
-            trackList = Track.getItemsByAlbumId(getActivity(), albumId);
-        }
-
+        List<Track> trackList = Track.getItemsByAlbumId(activity, albumId);
         ListTrackAdapter adapter = new ListTrackAdapter(activity, trackList);
+
+        // トラックリストの動作設定
         ListView trackListView = (ListView) view.findViewById(R.id.list);
-        trackListView.setAdapter(adapter); // リスト設定
-        trackListView.setOnItemClickListener(mTrackClickListener);   // リスト押下動作設定
+        trackListView.setAdapter(adapter);
+        trackListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(activity, PlayActivity.class);
+                // PLAYアクティビティへ値の受け渡し
+                intent.putExtra(MainActivity.EXTRA_POSITION, position); // ポジション
+                intent.putExtra(MainActivity.EXTRA_ALBUM_ID, albumId);  // アルバムID
+                // PLAYアクティビティ起動
+                startActivity(intent);
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // アルバムリストに戻るのでアルバムの選択を初期化
+        MainActivity activity = (MainActivity) super.getActivity();
+        activity.setAlbumId(0);
     }
 
     /* OSによる停止時の処理 */
@@ -62,22 +75,7 @@ public class ListTrackFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // 現在のインスタンス変数を保存
+        // 現在の状態を保存
         outState.putLong(BUNDLE_ALBUM_ID, albumId);
     }
-
-    /* トラッククリック時の処理 */
-    private OnItemClickListener mTrackClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            long trackId = ((Track) lv.getItemAtPosition(position)).getId();
-
-            Intent intent = new Intent(activity, PlayActivity.class);
-            // PLAYアクティビティへ値の受け渡し
-            intent.putExtra(EXTRA_TRACK_ID, trackId);   // トラックID
-            // PLAYアクティビティ起動
-            startActivity(intent);
-        }
-    };
 }

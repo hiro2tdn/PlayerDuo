@@ -8,10 +8,12 @@
 	<string name="scan_sdcard">Scan SD Card</string>
 
 	<!-- Pager -->
-    <string name="home">ホーム</string>
-    <string name="artists">アーティスト</string>
-    <string name="albums">アルバム</string>
-    <string name="tracks">トラック</string>
+	<string-array name="titles">
+        <item>ホーム</item>
+        <item>アーティスト</item>
+        <item>アルバム</item>
+        <item>トラック</item>
+    </string-array>
 
     <!-- Button -->
     <string name="all_play">ALL PLAY</string>
@@ -31,7 +33,7 @@
 	<string name="dummy_duration">0:00</string>
 	<string name="no_image_desc">No Image</string>
 
-    <!-- 複数形対応。日本語では常にother -->
+    <!-- 複数形対応。日本語の場合は、常にother -->
     <plurals name="album_num">
         <item quantity="other">%1$d アルバム</item>
     </plurals>

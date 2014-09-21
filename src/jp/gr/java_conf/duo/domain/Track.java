@@ -163,9 +163,44 @@ public class Track {
     }
 
     /* 全トラック取得 */
-    public static List<Track> getItems(Context activity) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, null, null, null);
+    public static List<Track> getItems(Context context) {
+        return getPrivateItems(context, null, 0);
+    }
+
+    /* 指定されたアーティストのトラック取得 */
+    public static List<Track> getItemsByArtistId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
+        return getPrivateItems(context, selection, id);
+    }
+
+    /* 指定されたアルバムのトラック取得 */
+    public static List<Track> getItemsByAlbumId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ALBUM_ID + "= ?";
+        return getPrivateItems(context, selection, id);
+    }
+
+    /* 指定されたトラック取得 */
+    public static Track getItemByTrackId(Context context, long id) {
+        String selection = MediaStore.Audio.Media._ID + "= ?";
+        return getPrivateItems(context, selection, id).get(0);
+    }
+
+    /* トラック取得 */
+    private static List<Track> getPrivateItems(Context context, String selection, long id) {
+        String myselection = null;
+        String[] selectionArgs = null;
+        if (id != 0) {
+            myselection = selection;
+            selectionArgs = new String[] { String.valueOf(id) };
+        }
+
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                Track.COLUMNS,
+                myselection,
+                selectionArgs,
+                "ARTIST ASC, ALBUM ASC, TRACK ASC");
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
@@ -178,44 +213,5 @@ public class Track {
 
         cursor.close();
         return tracks;
-    }
-
-    /* 指定されたアーティストのトラック取得 */
-    public static List<Track> getItemsByArtistId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media.ARTIST_ID + "= ?", new String[] { String.valueOf(id) }, null);
-
-        List<Track> tracks = new ArrayList<Track>();
-        while (cursor.moveToNext()) {
-            tracks.add(new Track(cursor));
-        }
-
-        cursor.close();
-        return tracks;
-    }
-
-    /* 指定されたアルバムのトラック取得 */
-    public static List<Track> getItemsByAlbumId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media.ALBUM_ID + "= ?", new String[] { String.valueOf(id) }, null);
-
-        List<Track> tracks = new ArrayList<Track>();
-        while (cursor.moveToNext()) {
-            tracks.add(new Track(cursor));
-        }
-
-        cursor.close();
-        return tracks;
-    }
-
-    /* 指定されたトラック取得 */
-    public static Track getItemByTrackId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Track.COLUMNS, MediaStore.Audio.Media._ID + "= ?", new String[] { String.valueOf(id) }, null);
-
-        cursor.moveToNext();
-        Track track = new Track(cursor);
-        cursor.close();
-        return track;
     }
 }

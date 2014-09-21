@@ -84,33 +84,38 @@ public class Album {
     }
 
     /* 全アルバム取得 */
-    public static List<Album> getItems(Context activity) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                Album.COLUMNS,
-                null,
-                null,
-                "ALBUM  ASC");
-
-        List<Album> albums = new ArrayList<Album>();
-        while (cursor.moveToNext()) {
-            albums.add(new Album(cursor));
-        }
-
-        cursor.close();
-        return albums;
+    public static List<Album> getItems(Context context) {
+        return getPrivateItems(context, null, 0);
     }
 
     /* 指定されたアーティストのアルバム取得 */
-    public static List<Album> getItemsByArtistId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
+    public static List<Album> getItemsByArtistId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
+        return getPrivateItems(context, selection, id);
+    }
+
+    /* 指定されたアルバム取得 */
+    public static Album getItemByAlbumId(Context context, long id) {
+        String selection = MediaStore.Audio.Albums._ID + "= ?";
+        return getPrivateItems(context, selection, id).get(0);
+    }
+
+    /* アルバム取得 */
+    private static List<Album> getPrivateItems(Context context, String selection, long id) {
+        String myselection = null;
+        String[] selectionArgs = null;
+        if (id != 0) {
+            myselection = selection;
+            selectionArgs = new String[] { String.valueOf(id) };
+        }
+
+        ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 Album.COLUMNS,
-                MediaStore.Audio.Media.ARTIST_ID + "= ?",
-                new String[] { String.valueOf(id) },
-                "ALBUM  ASC");
+                myselection,
+                selectionArgs,
+                "ARTIST ASC, ALBUM ASC");
 
         List<Album> albums = new ArrayList<Album>();
         while (cursor.moveToNext()) {
@@ -119,21 +124,5 @@ public class Album {
 
         cursor.close();
         return albums;
-    }
-
-    /* 指定されたアルバム取得 */
-    public static Album getItemByAlbumId(Context activity, long id) {
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                Album.COLUMNS,
-                MediaStore.Audio.Albums._ID + "= ?",
-                new String[] { String.valueOf(id) },
-                null);
-
-        cursor.moveToNext();
-        Album album = new Album(cursor);
-        cursor.close();
-        return album;
     }
 }
