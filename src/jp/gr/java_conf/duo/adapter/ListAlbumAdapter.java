@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/* リストアルバムアダプタ */
 public class ListAlbumAdapter extends ArrayAdapter<Album> {
 
     public ListAlbumAdapter(Context context, List<Album> albums) {
@@ -24,13 +25,11 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
     private static class ViewHolder {
         TextView albumTextView;
         TextView artistTextView;
-        TextView tracksTextView;
         ImageView artworkImageView;
 
         public ViewHolder(View view) {
             albumTextView = (TextView) view.findViewById(R.id.album_name);
             artistTextView = (TextView) view.findViewById(R.id.artist_name);
-            tracksTextView = (TextView) view.findViewById(R.id.track_num);
             artworkImageView = (ImageView) view.findViewById(R.id.albumart);
         }
     }
@@ -50,7 +49,6 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
         Album album = getItem(position);
         holder.albumTextView.setText(album.getAlbum());
         holder.artistTextView.setText(album.getArtist());
-        holder.tracksTextView.setText(getContext().getResources().getQuantityString(R.plurals.track_num, album.getTracks(), album.getTracks()));
 
         String path = album.getAlbumArt();
         holder.artworkImageView.setImageResource(R.drawable.dummy_album_art_slim_gray);

@@ -4,15 +4,15 @@
     <string name="action_settings">設定</string>
 
     <!-- Home -->
-    <string name="home_desc">出来る事\n・ContentProviderの音楽再生\n・.m4aの歌詞表示</string>
+    <string name="home_desc">出来る事\nContentProviderの音楽再生\nm4aの歌詞表示</string>
 	<string name="scan_sdcard">Scan SD Card</string>
 
 	<!-- Pager -->
 	<string-array name="titles">
-        <item>ホーム</item>
-        <item>アーティスト</item>
-        <item>アルバム</item>
-        <item>トラック</item>
+        <item>ARTISTS</item>
+        <item>ALBUMS</item>
+        <item>TRACKS</item>
+        <item>HOME</item>
     </string-array>
 
     <!-- Button -->
@@ -27,17 +27,7 @@
 	<string name="dummy_artist_name">アーティスト名</string>
     <string name="dummy_album_name">アルバム名</string>
    	<string name="dummy_lyric">歌詞</string>
-   	<string name="dummy_album_num">0 アルバム</string>
-   	<string name="dummy_track_num">0 トラック</string>
   	<string name="dummy_track_no">0/0</string>
 	<string name="dummy_duration">0:00</string>
 	<string name="no_image_desc">No Image</string>
-
-    <!-- 複数形対応。日本語の場合は、常にother -->
-    <plurals name="album_num">
-        <item quantity="other">%1$d アルバム</item>
-    </plurals>
-    <plurals name="track_num">
-        <item quantity="other">%1$d トラック</item>
-    </plurals>
 </resources>

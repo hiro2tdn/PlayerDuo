@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/* リストトラックアダプタ */
 public class ListTrackAdapter extends ArrayAdapter<Track> {
 
     public ListTrackAdapter(Context context, List<Track> tracks) {
@@ -19,14 +20,10 @@ public class ListTrackAdapter extends ArrayAdapter<Track> {
     private static class ViewHolder {
         TextView titleTextView;
         TextView artistTextView;
-        TextView albumTextView;
-        TextView durationTextView;
 
         public ViewHolder(View view) {
             titleTextView = (TextView) view.findViewById(R.id.track_name);
             artistTextView = (TextView) view.findViewById(R.id.artist_name);
-            albumTextView = (TextView) view.findViewById(R.id.album_name);
-            durationTextView = (TextView) view.findViewById(R.id.duration);
         }
     }
 
@@ -45,8 +42,6 @@ public class ListTrackAdapter extends ArrayAdapter<Track> {
         Track track = getItem(position);
         holder.titleTextView.setText(track.getTitle());
         holder.artistTextView.setText(track.getArtist());
-        holder.albumTextView.setText(track.getAlbum());
-        holder.durationTextView.setText(track.getViewDuration());
 
         return convertView;
     }

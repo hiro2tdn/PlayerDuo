@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/* フラグメントページャアダプタ */
+/* ルートメニューアダプタ */
 public class RootMenuAdapter extends FragmentPagerAdapter {
 
     private String titles[];
@@ -24,10 +24,10 @@ public class RootMenuAdapter extends FragmentPagerAdapter {
         titles = resources.getStringArray(R.array.titles);
 
         frags = new Fragment[titles.length];
-        frags[0] = new HomeFragment();
-        frags[1] = new ListArtistFragment();
-        frags[2] = new ListAlbumFragment();
-        frags[3] = new ListTrackFragment();
+        frags[0] = new ListArtistFragment();
+        frags[1] = new ListAlbumFragment();
+        frags[2] = new ListTrackFragment();
+        frags[3] = new HomeFragment();
     }
 
     @Override

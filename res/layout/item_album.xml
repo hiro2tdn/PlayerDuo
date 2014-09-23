@@ -6,9 +6,8 @@
 
     <ImageView
         android:id="@+id/albumart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:contentDescription="@string/no_image_desc"
         android:src="@drawable/dummy_album_art_slim_gray" />
 
@@ -30,13 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dummy_artist_name"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/track_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dummy_track_num"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
