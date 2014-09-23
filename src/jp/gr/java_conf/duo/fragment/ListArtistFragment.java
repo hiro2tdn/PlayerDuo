@@ -26,23 +26,26 @@ public class ListArtistFragment extends Fragment {
         View view = inflater.inflate(R.layout.list_artist, container, false);
         final MainActivity activity = (MainActivity) super.getActivity();
 
-        // アーティストリストの取得
+        // リストの取得
         List<Artist> artistList = Artist.getItems(activity);
         ListArtistAdapter adapter = new ListArtistAdapter(activity, artistList);
 
-        // アーティストリストの設定
-        ListView artistListView = (ListView) view.findViewById(R.id.list);
+        // リストの設定
+        ListView artistListView = (ListView) view.findViewById(R.id.list_artist);
         artistListView.setAdapter(adapter);
+
+        // リスト押下時の動作設定
         artistListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
-                activity.setArtistId(((Artist) lv.getItemAtPosition(position)).getId());
+                Artist artist = (Artist) lv.getItemAtPosition(position);
+                activity.setArtistId(artist.getId());
 
                 // Fragmentを作成
                 FragmentManager fm = activity.getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.root, new ListAlbumFragment(), MainActivity.FLAGMENT_TAGS[1]);
+                ft.replace(R.id.root, new RootFragment(), MainActivity.FLAGMENT_TAGS[0]);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.addToBackStack(null);
                 ft.commit();

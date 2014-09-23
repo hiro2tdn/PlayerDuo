@@ -39,23 +39,26 @@ public class ListAlbumFragment extends Fragment {
             artistId = activity.getArtistId();
         }
 
-        // アルバムリストの取得
+        // リストの取得
         List<Album> albumList = Album.getItemsByArtistId(activity, artistId);
         ListAlbumAdapter adapter = new ListAlbumAdapter(activity, albumList);
 
-        // アルバムリストの動作設定
-        ListView albumListView = (ListView) view.findViewById(R.id.list);
+        // リストの設定
+        ListView albumListView = (ListView) view.findViewById(R.id.list_album);
         albumListView.setAdapter(adapter);
+
+        // リスト押下時の動作設定
         albumListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
-                activity.setAlbumId(((Album) lv.getItemAtPosition(position)).getId());
+                Album album = (Album) lv.getItemAtPosition(position);
+                activity.setAlbumId(album.getId());
 
                 // Fragmentを作成
                 FragmentManager fm = activity.getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.root, new ListTrackFragment(), MainActivity.FLAGMENT_TAGS[2]);
+                ft.replace(R.id.root, new RootFragment(), MainActivity.FLAGMENT_TAGS[0]);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.addToBackStack(null);
                 ft.commit();

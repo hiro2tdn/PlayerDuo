@@ -1,7 +1,6 @@
 package jp.gr.java_conf.duo.adapter;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.fragment.HomeFragment;
 import jp.gr.java_conf.duo.fragment.ListAlbumFragment;
 import jp.gr.java_conf.duo.fragment.ListArtistFragment;
 import jp.gr.java_conf.duo.fragment.ListTrackFragment;
@@ -11,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/* ルートメニューアダプタ */
-public class RootMenuAdapter extends FragmentPagerAdapter {
+/* ルートアダプタ */
+public class RootAdapter extends FragmentPagerAdapter {
 
     private String titles[];
     private Fragment frags[];
 
-    public RootMenuAdapter(FragmentManager fm, Context context) {
+    public RootAdapter(FragmentManager fm, Context context) {
         super(fm);
 
         Resources resources = context.getResources();
@@ -27,7 +26,6 @@ public class RootMenuAdapter extends FragmentPagerAdapter {
         frags[0] = new ListArtistFragment();
         frags[1] = new ListAlbumFragment();
         frags[2] = new ListTrackFragment();
-        frags[3] = new HomeFragment();
     }
 
     @Override
@@ -45,4 +43,8 @@ public class RootMenuAdapter extends FragmentPagerAdapter {
         return titles.length;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

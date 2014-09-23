@@ -39,13 +39,15 @@ public class ListTrackFragment extends Fragment {
             albumId = activity.getAlbumId();
         }
 
-        // トラックリストの取得
+        // リストの取得
         List<Track> trackList = Track.getItemsByAlbumId(activity, albumId);
         ListTrackAdapter adapter = new ListTrackAdapter(activity, trackList);
 
-        // トラックリストの動作設定
-        ListView trackListView = (ListView) view.findViewById(R.id.list);
+        // リストの設定
+        ListView trackListView = (ListView) view.findViewById(R.id.list_track);
         trackListView.setAdapter(adapter);
+
+        // リスト押下時の動作設定
         trackListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

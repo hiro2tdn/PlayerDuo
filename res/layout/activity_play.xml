@@ -8,11 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingBottom="3dp"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:paddingTop="3dp" >
+        android:orientation="vertical" >
 
        	<TextView
        	    android:id="@+id/track_name"
@@ -92,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/back" />
+            android:text="@string/btn_back" />
 
         <Button
             android:id="@+id/btn_play"
@@ -100,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/play" />
+            android:text="@string/btn_play" />
 
         <Button
             android:id="@+id/btn_stop"
@@ -108,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/stop" />
+            android:text="@string/btn_stop" />
 
         <Button
             android:id="@+id/btn_right"
@@ -116,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/next" />
+            android:text="@string/btn_next" />
 
     </LinearLayout>
 

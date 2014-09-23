@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PlayerDuo</string>
-    <string name="action_settings">設定</string>
-
-    <!-- Home -->
-    <string name="home_desc">出来る事\nContentProviderの音楽再生\nm4aの歌詞表示</string>
-	<string name="scan_sdcard">Scan SD Card</string>
 
 	<!-- Pager -->
 	<string-array name="titles">
         <item>ARTISTS</item>
         <item>ALBUMS</item>
         <item>TRACKS</item>
-        <item>HOME</item>
     </string-array>
 
+    <!-- Menu -->
+    <string name="menu_all_play">ALL PLAY</string>
+	<string name="menu_scan_sdcard">Scan SD Card</string>
+	<string name="menu_memo">MEMO</string>
+
     <!-- Button -->
-    <string name="all_play">ALL PLAY</string>
-    <string name="play">PLAY</string>
-    <string name="stop">STOP</string>
-    <string name="back">&lt;</string>
-    <string name="next">&gt;</string>
+    <string name="btn_play">PLAY</string>
+    <string name="btn_stop">STOP</string>
+    <string name="btn_back">&lt;</string>
+    <string name="btn_next">&gt;</string>
 
     <!-- Other -->
 	<string name="dummy_track_name">トラック名</string>

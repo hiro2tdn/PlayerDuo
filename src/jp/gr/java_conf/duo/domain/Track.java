@@ -19,17 +19,17 @@ import android.provider.MediaStore;
 
 public class Track {
 
-    private long id; // コンテントプロバイダに登録されたID
-    private String path; // 実データのパス
-    private String title; // タイトル
-    private String album; // アルバム名
-    private String artist; // アーティスト名
-    private long albumId; // アルバムID
-    private long artistId; // アーティストID
-    private long duration; // 再生時間(ミリ秒)
-    private int trackNo; // トラック番号
-    private Uri uri; // URI
-    private String lyric; // 歌詞
+    private long id;        // コンテントプロバイダに登録されたID
+    private String path;    // 実データのパス
+    private String title;   // タイトル
+    private String album;   // アルバム名
+    private String artist;  // アーティスト名
+    private long albumId;   // アルバムID
+    private long artistId;  // アーティストID
+    private long duration;  // 再生時間(ミリ秒)
+    private int trackNo;    // トラック番号
+    private Uri uri;        // URI
+    private String lyric;   // 歌詞
 
     /* トラック取得時に取得する情報 */
     public static final String[] COLUMNS = {
@@ -204,10 +204,6 @@ public class Track {
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
-            /* １秒未満は無視する */
-            if (cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)) < 1000) {
-                continue;
-            }
             tracks.add(new Track(cursor));
         }
 
