@@ -85,10 +85,10 @@ public class Artist {
 
     /* アーティスト取得 */
     private static List<Artist> getPrivateItems(Context context, String selection, long id) {
-        String myselection = null;
+        String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {
-            myselection = selection;
+            mSelection = selection;
             selectionArgs = new String[] { String.valueOf(id) };
         }
 
@@ -96,7 +96,7 @@ public class Artist {
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
                 Artist.COLUMNS,
-                myselection,
+                mSelection,
                 selectionArgs,
                 "ARTIST ASC");
 

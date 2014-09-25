@@ -8,8 +8,6 @@ import jp.gr.java_conf.duo.adapter.ListAlbumAdapter;
 import jp.gr.java_conf.duo.domain.Album;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +29,12 @@ public class ListAlbumFragment extends Fragment {
         final MainActivity activity = (MainActivity) super.getActivity();
 
         // OSによる停止前の状態があるか
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            // アクティビティからアルバムID取得
+            artistId = activity.artistId;
+        } else {
             // OSによる停止時の状態を復元
             artistId = savedInstanceState.getLong(BUNDLE_ARTIST_ID);
-        } else {
-            // アクティビティからアルバムID取得
-            artistId = activity.getArtistId();
         }
 
         // リストの取得
@@ -53,15 +51,11 @@ public class ListAlbumFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
                 Album album = (Album) lv.getItemAtPosition(position);
-                activity.setAlbumId(album.getId());
+                activity.albumId = album.getId();
 
-                // Fragmentを作成
-                FragmentManager fm = activity.getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.root, new RootFragment(), MainActivity.FLAGMENT_TAGS[0]);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.addToBackStack(null);
-                ft.commit();
+                // ページ内容を再描画
+                activity.pagerAdapter.notifyDataSetChanged();
+                activity.viewPager.setCurrentItem(2);
             }
         });
 
@@ -74,7 +68,7 @@ public class ListAlbumFragment extends Fragment {
 
         // アーティストリストに戻るのでアーティストの選択を初期化
         MainActivity activity = (MainActivity) super.getActivity();
-        activity.setArtistId(0);
+        activity.artistId = 0;
     }
 
     /* OSによる停止時の処理 */

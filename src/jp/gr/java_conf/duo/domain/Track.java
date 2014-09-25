@@ -187,10 +187,10 @@ public class Track {
 
     /* トラック取得 */
     private static List<Track> getPrivateItems(Context context, String selection, long id) {
-        String myselection = null;
+        String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {
-            myselection = selection;
+            mSelection = selection;
             selectionArgs = new String[] { String.valueOf(id) };
         }
 
@@ -198,7 +198,7 @@ public class Track {
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 Track.COLUMNS,
-                myselection,
+                mSelection,
                 selectionArgs,
                 "ARTIST ASC, ALBUM ASC, TRACK ASC");
 

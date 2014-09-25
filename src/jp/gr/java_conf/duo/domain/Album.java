@@ -102,10 +102,10 @@ public class Album {
 
     /* アルバム取得 */
     private static List<Album> getPrivateItems(Context context, String selection, long id) {
-        String myselection = null;
+        String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {
-            myselection = selection;
+            mSelection = selection;
             selectionArgs = new String[] { String.valueOf(id) };
         }
 
@@ -113,7 +113,7 @@ public class Album {
         Cursor cursor = resolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 Album.COLUMNS,
-                myselection,
+                mSelection,
                 selectionArgs,
                 "ARTIST ASC, ALBUM ASC");
 

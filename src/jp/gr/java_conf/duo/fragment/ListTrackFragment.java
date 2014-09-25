@@ -31,12 +31,12 @@ public class ListTrackFragment extends Fragment {
         final MainActivity activity = (MainActivity) super.getActivity();
 
         // OSによる停止前の状態があるか
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            // アクティビティからアルバムID取得
+            albumId = activity.albumId;
+        } else {
             // OSによる停止時の状態を復元
             albumId = savedInstanceState.getLong(BUNDLE_ALBUM_ID);
-        } else {
-            // アクティビティからアルバムID取得
-            albumId = activity.getAlbumId();
         }
 
         // リストの取得
@@ -69,7 +69,7 @@ public class ListTrackFragment extends Fragment {
 
         // アルバムリストに戻るのでアルバムの選択を初期化
         MainActivity activity = (MainActivity) super.getActivity();
-        activity.setAlbumId(0);
+        activity.albumId= 0;
     }
 
     /* OSによる停止時の処理 */

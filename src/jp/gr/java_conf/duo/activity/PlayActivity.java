@@ -34,13 +34,13 @@ public class PlayActivity extends FragmentActivity {
         Intent intent = getIntent();
 
         // OSによる停止前の状態があるか
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            // ポジションを取得
+            position = intent.getIntExtra(MainActivity.EXTRA_POSITION, 0);
+        } else {
             // OSによる停止時の状態を復元
             position = savedInstanceState.getInt(BUNDLE_POSITION);
             // flgPlay = savedInstanceState.getBoolean(BUNDLE_FLG_PLAY);
-        } else {
-            // ポジションを取得
-            position = intent.getIntExtra(MainActivity.EXTRA_POSITION, 0);
         }
 
         long albumId = intent.getLongExtra(MainActivity.EXTRA_ALBUM_ID, 0);

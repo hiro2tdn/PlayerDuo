@@ -8,8 +8,6 @@ import jp.gr.java_conf.duo.adapter.ListArtistAdapter;
 import jp.gr.java_conf.duo.domain.Artist;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +38,12 @@ public class ListArtistFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
                 Artist artist = (Artist) lv.getItemAtPosition(position);
-                activity.setArtistId(artist.getId());
+                activity.artistId = artist.getId();
+                activity.albumId = 0;
 
-                // Fragmentを作成
-                FragmentManager fm = activity.getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.root, new RootFragment(), MainActivity.FLAGMENT_TAGS[0]);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.addToBackStack(null);
-                ft.commit();
+                // ページ内容を再描画
+                activity.pagerAdapter.notifyDataSetChanged();
+                activity.viewPager.setCurrentItem(1);
             }
         });
 
