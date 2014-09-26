@@ -1,9 +1,9 @@
 package jp.gr.java_conf.duo.adapter;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.fragment.ListAlbumFragment;
-import jp.gr.java_conf.duo.fragment.ListArtistFragment;
-import jp.gr.java_conf.duo.fragment.ListTrackFragment;
+import jp.gr.java_conf.duo.activity.ListAlbumFragment;
+import jp.gr.java_conf.duo.activity.ListArtistFragment;
+import jp.gr.java_conf.duo.activity.ListTrackFragment;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,26 +13,33 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private String titles[];
-    private Fragment frags[];
 
     public MainPagerAdapter(FragmentManager fm, Resources resources) {
         super(fm);
-
         titles = resources.getStringArray(R.array.titles);
-        frags = new Fragment[titles.length];
-        frags[0] = new ListArtistFragment();
-        frags[1] = new ListAlbumFragment();
-        frags[2] = new ListTrackFragment();
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        Fragment fragment = null;
+        switch (position) {
+        case 0:
+            fragment = new ListArtistFragment();
+            break;
+        case 1:
+            fragment = new ListAlbumFragment();
+            break;
+        case 2:
+            fragment = new ListTrackFragment();
+            break;
+        }
+
+        return fragment;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         return titles[position];
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        return frags[position];
     }
 
     @Override

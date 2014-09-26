@@ -1,11 +1,10 @@
-package jp.gr.java_conf.duo.fragment;
+package jp.gr.java_conf.duo.activity;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.activity.MainActivity;
-import jp.gr.java_conf.duo.adapter.ListArtistAdapter;
-import jp.gr.java_conf.duo.domain.Artist;
+import jp.gr.java_conf.duo.adapter.ListAlbumAdapter;
+import jp.gr.java_conf.duo.domain.Album;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,35 +14,33 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-/* アーティストリストフラグメント */
-public class ListArtistFragment extends Fragment {
+/* アルバムリストフラグメント */
+public class ListAlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.list_artist, container, false);
+        View view = inflater.inflate(R.layout.list_album, container, false);
         final MainActivity activity = (MainActivity) super.getActivity();
 
-        // リストの取得
-        List<Artist> artistList = Artist.getItems(activity);
-        ListArtistAdapter adapter = new ListArtistAdapter(activity, artistList);
-
         // リストの設定
-        ListView artistListView = (ListView) view.findViewById(R.id.list_artist);
-        artistListView.setAdapter(adapter);
+        List<Album> albumList = Album.getItemsByArtistId(activity, activity.artistId);
+        ListAlbumAdapter adapter = new ListAlbumAdapter(activity, albumList);
+        ListView albumListView = (ListView) view.findViewById(R.id.list_album);
+        albumListView.setAdapter(adapter);
 
         // リスト押下時の動作設定
-        artistListView.setOnItemClickListener(new OnItemClickListener() {
+        albumListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
-                Artist artist = (Artist) lv.getItemAtPosition(position);
-                activity.artistId = artist.getId();
-                activity.albumId = 0;
+                Album album = (Album) lv.getItemAtPosition(position);
+                activity.albumId = album.getId();
 
                 // ページ内容を再描画
                 activity.pagerAdapter.notifyDataSetChanged();
-                activity.viewPager.setCurrentItem(1);
+                // トラックページを表示
+                activity.viewPager.setCurrentItem(2);
             }
         });
 

@@ -74,17 +74,17 @@ public class Artist {
 
     /* 全アーティスト取得 */
     public static List<Artist> getItems(Context context) {
-        return getPrivateItems(context, null, 0);
+        return getMyItems(context, null, 0);
     }
 
     /* 指定されたアーティスト取得 */
     public static Artist getItemByArtistId(Context context, long id) {
         String selection = MediaStore.Audio.Artists._ID + "= ?";
-        return getPrivateItems(context, selection, id).get(0);
+        return getMyItems(context, selection, id).get(0);
     }
 
     /* アーティスト取得 */
-    private static List<Artist> getPrivateItems(Context context, String selection, long id) {
+    private static List<Artist> getMyItems(Context context, String selection, long id) {
         String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {

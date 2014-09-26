@@ -18,33 +18,30 @@ import android.widget.TextView;
 /* PLAYアクティビティ */
 public class PlayActivity extends FragmentActivity {
 
-    private static final String BUNDLE_POSITION = "POSITION";
-    // private static final String BUNDLE_FLG_PLAY = "FLG_PLAY";
-
-    private MediaPlayer mp = null;
-    private List<Track> trackList = null;
-    private int position = 0;
+    private MediaPlayer mp;
+    private List<Track> trackList;
+    private int position;
+    private long artistId;
+    private long albumId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        // MainActivityから値の受取
-        Intent intent = getIntent();
 
-        // OSによる停止前の状態があるか
-        if (savedInstanceState == null) {
-            // ポジションを取得
-            position = intent.getIntExtra(MainActivity.EXTRA_POSITION, 0);
+        // OSによる停止時の状態を復元
+        if (savedInstanceState != null) {
+            artistId = savedInstanceState.getLong(MainActivity.CONST_ARTIST_ID);
+            albumId = savedInstanceState.getLong(MainActivity.CONST_ALBUM_ID);
+            position = savedInstanceState.getInt(MainActivity.CONST_POSITION);
         } else {
-            // OSによる停止時の状態を復元
-            position = savedInstanceState.getInt(BUNDLE_POSITION);
-            // flgPlay = savedInstanceState.getBoolean(BUNDLE_FLG_PLAY);
+            // MainActivityから値の受取
+            Intent intent = getIntent();
+            artistId = intent.getLongExtra(MainActivity.CONST_ARTIST_ID, 0);
+            albumId = intent.getLongExtra(MainActivity.CONST_ALBUM_ID, 0);
+            position = intent.getIntExtra(MainActivity.CONST_POSITION, 0);
         }
-
-        long albumId = intent.getLongExtra(MainActivity.EXTRA_ALBUM_ID, 0);
-        long artistId = intent.getLongExtra(MainActivity.EXTRA_ARTIST_ID, 0);
 
         // トラックリストの取得
         if (albumId != 0) {
@@ -161,15 +158,6 @@ public class PlayActivity extends FragmentActivity {
         }
     }
 
-    /* OSによる停止時の処理 */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // 現在の状態を保存
-        outState.putInt(BUNDLE_POSITION, position);
-    }
-
     /* TextViewの設定 */
     private void setTextView() {
         Track track = trackList.get(position);
@@ -192,6 +180,16 @@ public class PlayActivity extends FragmentActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    /* OSによる停止時の処理 */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // 現在の状態を保存
+        outState.putLong(MainActivity.CONST_ARTIST_ID, artistId);
+        outState.putLong(MainActivity.CONST_ALBUM_ID, albumId);
+        outState.putInt(MainActivity.CONST_POSITION, position);
     }
 }

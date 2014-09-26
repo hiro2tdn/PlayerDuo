@@ -164,29 +164,29 @@ public class Track {
 
     /* 全トラック取得 */
     public static List<Track> getItems(Context context) {
-        return getPrivateItems(context, null, 0);
+        return getMyItems(context, null, 0);
     }
 
     /* 指定されたアーティストのトラック取得 */
     public static List<Track> getItemsByArtistId(Context context, long id) {
         String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getPrivateItems(context, selection, id);
+        return getMyItems(context, selection, id);
     }
 
     /* 指定されたアルバムのトラック取得 */
     public static List<Track> getItemsByAlbumId(Context context, long id) {
         String selection = MediaStore.Audio.Media.ALBUM_ID + "= ?";
-        return getPrivateItems(context, selection, id);
+        return getMyItems(context, selection, id);
     }
 
     /* 指定されたトラック取得 */
     public static Track getItemByTrackId(Context context, long id) {
         String selection = MediaStore.Audio.Media._ID + "= ?";
-        return getPrivateItems(context, selection, id).get(0);
+        return getMyItems(context, selection, id).get(0);
     }
 
     /* トラック取得 */
-    private static List<Track> getPrivateItems(Context context, String selection, long id) {
+    private static List<Track> getMyItems(Context context, String selection, long id) {
         String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {

@@ -85,23 +85,23 @@ public class Album {
 
     /* 全アルバム取得 */
     public static List<Album> getItems(Context context) {
-        return getPrivateItems(context, null, 0);
+        return getMyItems(context, null, 0);
     }
 
     /* 指定されたアーティストのアルバム取得 */
     public static List<Album> getItemsByArtistId(Context context, long id) {
         String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getPrivateItems(context, selection, id);
+        return getMyItems(context, selection, id);
     }
 
     /* 指定されたアルバム取得 */
     public static Album getItemByAlbumId(Context context, long id) {
         String selection = MediaStore.Audio.Albums._ID + "= ?";
-        return getPrivateItems(context, selection, id).get(0);
+        return getMyItems(context, selection, id).get(0);
     }
 
     /* アルバム取得 */
-    private static List<Album> getPrivateItems(Context context, String selection, long id) {
+    private static List<Album> getMyItems(Context context, String selection, long id) {
         String mSelection = null;
         String[] selectionArgs = null;
         if (id != 0) {
