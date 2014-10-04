@@ -198,7 +198,7 @@ public class Track {
                 AudioFile f = AudioFileIO.read(new File(path));
                 Mp4Tag mp4tag = (Mp4Tag) f.getTag();
                 lyric = mp4tag.getFirst(Mp4FieldKey.LYRICS).replaceAll("\r", "\n");
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

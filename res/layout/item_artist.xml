@@ -17,11 +17,4 @@
 		android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <ImageView
-        android:src="@drawable/green_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/no_image_desc"
-        android:layout_gravity="center_vertical" />
-
 </LinearLayout>

@@ -10,7 +10,6 @@
     </string-array>
 
     <!-- Menu -->
-    <string name="menu_all_play">ALL PLAY</string>
 	<string name="menu_scan_sdcard">Scan SD Card</string>
 	<string name="menu_memo">MEMO</string>
 

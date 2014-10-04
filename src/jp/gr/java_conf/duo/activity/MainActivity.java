@@ -17,9 +17,9 @@ import android.widget.Toast;
 /* メインアクティビティ */
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
-    public static final String CONST_POSITION = "POSITION";
     public static final String CONST_ARTIST_ID = "ARTIST_ID";
     public static final String CONST_ALBUM_ID = "ALBUM_ID";
+    public static final String CONST_POSITION = "POSITION";
 
     public MainPagerAdapter pagerAdapter;
     public ViewPager viewPager;
@@ -76,14 +76,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_all_play:
-            // PLAYアクティビティへ値の受け渡し・起動
-            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-            intent.putExtra(CONST_ARTIST_ID, artistId);         // アーティストID
-            intent.putExtra(CONST_ALBUM_ID, albumId);           // アルバムID
-            intent.putExtra(MainActivity.CONST_POSITION, 0);    // ポジション
-            startActivity(intent);
-            return true;
         case R.id.menu_scan_sdcard:
             // SDカードのマウント
             String _url = "file://" + Environment.getExternalStorageDirectory();

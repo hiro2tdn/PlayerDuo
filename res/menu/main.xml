@@ -3,9 +3,6 @@
     tools:context="jp.gr.java_conf.duo.MainActivity" >
 
     <item
-        android:id="@+id/menu_all_play"
-        android:title="@string/menu_all_play"/>
-    <item
         android:id="@+id/menu_scan_sdcard"
         android:title="@string/menu_scan_sdcard"/>
     <item

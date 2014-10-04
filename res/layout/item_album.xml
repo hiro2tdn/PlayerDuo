@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/no_image_desc"
-        android:src="@drawable/dummy_album_art_slim_gray" />
+        android:src="@drawable/dummy_album_art" />
 
     <LinearLayout
         android:layout_width="0dip"
@@ -38,12 +38,5 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
-
-    <ImageView
-        android:src="@drawable/green_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/no_image_desc"
-        android:layout_gravity="center_vertical" />
 
 </LinearLayout>

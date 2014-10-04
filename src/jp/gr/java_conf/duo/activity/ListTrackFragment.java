@@ -35,7 +35,7 @@ public class ListTrackFragment extends Fragment {
         ListView trackListView = (ListView) view.findViewById(R.id.list_track);
         trackListView.setAdapter(adapter);
 
-        // リスト押下時の動作設定
+        // リストクリック時の動作設定
         trackListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
