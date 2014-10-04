@@ -22,6 +22,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dummy_album_name"
+            android:scrollHorizontally="true"
+			android:ellipsize="end"
+			android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -29,6 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dummy_artist_name"
+            android:scrollHorizontally="true"
+			android:ellipsize="end"
+			android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>

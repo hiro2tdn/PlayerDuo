@@ -17,14 +17,13 @@ public class Album {
     private String artist;      // アルバムのアーティスト名
     private int tracks;         // アルバムのトラック数
 
-    /* アルバム取得時に取得する情報 */
-    public static final String[] COLUMNS = {
-        MediaStore.Audio.Albums._ID,
-        MediaStore.Audio.Albums.ALBUM,
-        MediaStore.Audio.Albums.ALBUM_ART,
-        MediaStore.Audio.Albums.ALBUM_KEY,
-        MediaStore.Audio.Albums.ARTIST,
-        MediaStore.Audio.Albums.NUMBER_OF_SONGS };
+    private static String[] COLUMNS = {
+            MediaStore.Audio.Albums._ID,
+            MediaStore.Audio.Albums.ALBUM,
+            MediaStore.Audio.Albums.ALBUM_ART,
+            MediaStore.Audio.Albums.ALBUM_KEY,
+            MediaStore.Audio.Albums.ARTIST,
+            MediaStore.Audio.Albums.NUMBER_OF_SONGS };
 
     public Album(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Albums._ID));
@@ -33,6 +32,49 @@ public class Album {
         albumKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_KEY));
         artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST));
         tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Albums.NUMBER_OF_SONGS));
+    }
+
+    /* アルバム取得 */
+    private static List<Album> getMyItems(Context context, String selection, long id) {
+        String mSelection = null;
+        String[] selectionArgs = null;
+        if (id != 0) {
+            mSelection = selection;
+            selectionArgs = new String[] { String.valueOf(id) };
+        }
+
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                COLUMNS,
+                mSelection,
+                selectionArgs,
+                "ARTIST ASC, ALBUM ASC");
+
+        List<Album> albums = new ArrayList<Album>();
+        while (cursor.moveToNext()) {
+            albums.add(new Album(cursor));
+        }
+
+        cursor.close();
+        return albums;
+    }
+
+    /* 全アルバム取得 */
+    public static List<Album> getItems(Context context) {
+        return getMyItems(context, null, 0);
+    }
+
+    /* 指定されたアーティストのアルバム取得 */
+    public static List<Album> getItemsByArtistId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
+        return getMyItems(context, selection, id);
+    }
+
+    /* 指定されたアルバム取得 */
+    public static Album getItemByAlbumId(Context context, long id) {
+        String selection = MediaStore.Audio.Albums._ID + "= ?";
+        return getMyItems(context, selection, id).get(0);
     }
 
     public long getId() {
@@ -81,48 +123,5 @@ public class Album {
 
     public void setTracks(int tracks) {
         this.tracks = tracks;
-    }
-
-    /* 全アルバム取得 */
-    public static List<Album> getItems(Context context) {
-        return getMyItems(context, null, 0);
-    }
-
-    /* 指定されたアーティストのアルバム取得 */
-    public static List<Album> getItemsByArtistId(Context context, long id) {
-        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getMyItems(context, selection, id);
-    }
-
-    /* 指定されたアルバム取得 */
-    public static Album getItemByAlbumId(Context context, long id) {
-        String selection = MediaStore.Audio.Albums._ID + "= ?";
-        return getMyItems(context, selection, id).get(0);
-    }
-
-    /* アルバム取得 */
-    private static List<Album> getMyItems(Context context, String selection, long id) {
-        String mSelection = null;
-        String[] selectionArgs = null;
-        if (id != 0) {
-            mSelection = selection;
-            selectionArgs = new String[] { String.valueOf(id) };
-        }
-
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                Album.COLUMNS,
-                mSelection,
-                selectionArgs,
-                "ARTIST ASC, ALBUM ASC");
-
-        List<Album> albums = new ArrayList<Album>();
-        while (cursor.moveToNext()) {
-            albums.add(new Album(cursor));
-        }
-
-        cursor.close();
-        return albums;
     }
 }

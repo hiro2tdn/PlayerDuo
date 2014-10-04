@@ -31,8 +31,7 @@ public class Track {
     private Uri uri;        // URI
     private String lyric;   // 歌詞
 
-    /* トラック取得時に取得する情報 */
-    public static final String[] COLUMNS = {
+    private static String[] COLUMNS = {
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.TITLE,
@@ -54,6 +53,55 @@ public class Track {
         duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
         trackNo = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.TRACK));
         uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+    }
+
+    /* トラック取得 */
+    private static List<Track> getMyItems(Context context, String selection, long id) {
+        String mSelection = null;
+        String[] selectionArgs = null;
+        if (id != 0) {
+            mSelection = selection;
+            selectionArgs = new String[] { String.valueOf(id) };
+        }
+
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                COLUMNS,
+                mSelection,
+                selectionArgs,
+                "ARTIST ASC, ALBUM ASC, TRACK ASC");
+
+        List<Track> tracks = new ArrayList<Track>();
+        while (cursor.moveToNext()) {
+            tracks.add(new Track(cursor));
+        }
+
+        cursor.close();
+        return tracks;
+    }
+
+    /* 全トラック取得 */
+    public static List<Track> getItems(Context context) {
+        return getMyItems(context, null, 0);
+    }
+
+    /* 指定されたアーティストのトラック取得 */
+    public static List<Track> getItemsByArtistId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
+        return getMyItems(context, selection, id);
+    }
+
+    /* 指定されたアルバムのトラック取得 */
+    public static List<Track> getItemsByAlbumId(Context context, long id) {
+        String selection = MediaStore.Audio.Media.ALBUM_ID + "= ?";
+        return getMyItems(context, selection, id);
+    }
+
+    /* 指定されたトラック取得 */
+    public static Track getItemByTrackId(Context context, long id) {
+        String selection = MediaStore.Audio.Media._ID + "= ?";
+        return getMyItems(context, selection, id).get(0);
     }
 
     public long getId() {
@@ -160,54 +208,5 @@ public class Track {
 
     public void setLyric(String lyric) {
         this.lyric = lyric;
-    }
-
-    /* 全トラック取得 */
-    public static List<Track> getItems(Context context) {
-        return getMyItems(context, null, 0);
-    }
-
-    /* 指定されたアーティストのトラック取得 */
-    public static List<Track> getItemsByArtistId(Context context, long id) {
-        String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getMyItems(context, selection, id);
-    }
-
-    /* 指定されたアルバムのトラック取得 */
-    public static List<Track> getItemsByAlbumId(Context context, long id) {
-        String selection = MediaStore.Audio.Media.ALBUM_ID + "= ?";
-        return getMyItems(context, selection, id);
-    }
-
-    /* 指定されたトラック取得 */
-    public static Track getItemByTrackId(Context context, long id) {
-        String selection = MediaStore.Audio.Media._ID + "= ?";
-        return getMyItems(context, selection, id).get(0);
-    }
-
-    /* トラック取得 */
-    private static List<Track> getMyItems(Context context, String selection, long id) {
-        String mSelection = null;
-        String[] selectionArgs = null;
-        if (id != 0) {
-            mSelection = selection;
-            selectionArgs = new String[] { String.valueOf(id) };
-        }
-
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                Track.COLUMNS,
-                mSelection,
-                selectionArgs,
-                "ARTIST ASC, ALBUM ASC, TRACK ASC");
-
-        List<Track> tracks = new ArrayList<Track>();
-        while (cursor.moveToNext()) {
-            tracks.add(new Track(cursor));
-        }
-
-        cursor.close();
-        return tracks;
     }
 }
