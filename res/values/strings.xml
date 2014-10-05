@@ -10,8 +10,8 @@
     </string-array>
 
     <!-- Menu -->
-	<string name="menu_scan_sdcard">Scan SD Card</string>
-	<string name="menu_memo">MEMO</string>
+	<string name="menu_scan_sdcard">SCAN SD CARD</string>
+	<string name="menu_readme">README</string>
 
     <!-- Button -->
     <string name="btn_play">PLAY</string>
@@ -19,10 +19,17 @@
     <string name="btn_back">&lt;</string>
     <string name="btn_next">&gt;</string>
 
+    <!-- 複数形対応。日本語では常にotherになるので無意味 -->
+    <plurals name="album_num">
+        <item quantity="one">%1$d album</item>
+        <item quantity="other">%1$d albums</item>
+    </plurals>
+
     <!-- Other -->
 	<string name="dummy_track_name">トラック名</string>
 	<string name="dummy_artist_name">アーティスト名</string>
     <string name="dummy_album_name">アルバム名</string>
+    <string name="dummy_album_num">0 albums</string>
    	<string name="dummy_lyric">歌詞</string>
   	<string name="dummy_track_no">0/0</string>
 	<string name="dummy_duration">0:00</string>

@@ -10,12 +10,12 @@ import android.provider.MediaStore;
 
 public class Album {
 
-    private long id;            // アルバムID
-    private String album;       // アルバム名
-    private String albumArt;    // アルバムアートのパス
-    private String albumKey;    // アルバムキー
-    private String artist;      // アルバムのアーティスト名
-    private int tracks;         // アルバムのトラック数
+    private long id; // アルバムID
+    private String album; // アルバム名
+    private String albumArt; // アルバムアートのパス
+    private String albumKey; // アルバムキー
+    private String artist; // アルバムのアーティスト名
+    private int trackNum; // アルバムのトラック数
 
     private static String[] COLUMNS = {
             MediaStore.Audio.Albums._ID,
@@ -31,13 +31,14 @@ public class Album {
         albumArt = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
         albumKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_KEY));
         artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST));
-        tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Albums.NUMBER_OF_SONGS));
+        trackNum = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Albums.NUMBER_OF_SONGS));
     }
 
     /* アルバム取得 */
     private static List<Album> getMyItems(Context context, String selection, long id) {
         String mSelection = null;
         String[] selectionArgs = null;
+
         if (id != 0) {
             mSelection = selection;
             selectionArgs = new String[] { String.valueOf(id) };
@@ -117,11 +118,11 @@ public class Album {
         this.artist = artist;
     }
 
-    public int getTracks() {
-        return tracks;
+    public int getTrackNum() {
+        return trackNum;
     }
 
-    public void setTracks(int tracks) {
-        this.tracks = tracks;
+    public void setTrackNum(int trackNum) {
+        this.trackNum = trackNum;
     }
 }

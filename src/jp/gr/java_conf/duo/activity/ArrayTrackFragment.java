@@ -3,7 +3,7 @@ package jp.gr.java_conf.duo.activity;
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ListTrackAdapter;
+import jp.gr.java_conf.duo.adapter.ArrayTrackAdapter;
 import jp.gr.java_conf.duo.domain.Track;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-/* トラックリストフラグメント */
-public class ListTrackFragment extends Fragment {
+/* トラック配列フラグメント */
+public class ArrayTrackFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class ListTrackFragment extends Fragment {
         } else {
             trackList = Track.getItemsByArtistId(activity, activity.artistId);
         }
-        ListTrackAdapter adapter = new ListTrackAdapter(activity, trackList);
+        ArrayTrackAdapter adapter = new ArrayTrackAdapter(activity, trackList);
         ListView trackListView = (ListView) view.findViewById(R.id.list_track);
         trackListView.setAdapter(adapter);
 
@@ -41,9 +41,9 @@ public class ListTrackFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // PLAYアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(activity, PlayActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId);   // アーティストID
-                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId);     // アルバムID
-                intent.putExtra(MainActivity.CONST_POSITION, position);             // ポジション
+                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId); // アーティストID
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId); // アルバムID
+                intent.putExtra(MainActivity.CONST_POSITION, position); // ポジション
                 startActivity(intent);
             }
         });

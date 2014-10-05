@@ -10,11 +10,11 @@ import android.provider.MediaStore;
 
 public class Artist {
 
-    private long id;            // アーティストID
-    private String artist;      // アーティスト名
-    private String artistKey;   // アーティストキー
-    private int albums;         // アーティストのアルバム数
-    private int tracks;         // アーティストのトラック数
+    private long id; // アーティストID
+    private String artist; // アーティスト名
+    private String artistKey; // アーティストキー
+    private int albumNum; // アーティストのアルバム数
+    private int trackNum; // アーティストのトラック数
 
     private static String[] COLUMNS = {
             MediaStore.Audio.Artists._ID,
@@ -27,14 +27,15 @@ public class Artist {
         id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Artists._ID));
         artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
         artistKey = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST_KEY));
-        albums = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_ALBUMS));
-        tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
+        albumNum = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_ALBUMS));
+        trackNum = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
     }
 
     /* アーティスト取得 */
     private static List<Artist> getMyItems(Context context, String selection, long id) {
         String mSelection = null;
         String[] selectionArgs = null;
+
         if (id != 0) {
             mSelection = selection;
             selectionArgs = new String[] { String.valueOf(id) };
@@ -92,19 +93,19 @@ public class Artist {
         this.artistKey = artistKey;
     }
 
-    public int getAlbums() {
-        return albums;
+    public int getAlbumNum() {
+        return albumNum;
     }
 
-    public void setAlbums(int albums) {
-        this.albums = albums;
+    public void setAlbumNum(int albumNum) {
+        this.albumNum = albumNum;
     }
 
-    public int getTracks() {
-        return tracks;
+    public int getTrackNum() {
+        return trackNum;
     }
 
-    public void setTracks(int tracks) {
-        this.tracks = tracks;
+    public void setTrackNum(int trackNum) {
+        this.trackNum = trackNum;
     }
 }

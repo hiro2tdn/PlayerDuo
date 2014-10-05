@@ -10,18 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-/* リストアーティストアダプタ */
-public class ListArtistAdapter extends ArrayAdapter<Artist> {
+/* アーティスト配列アダプタ */
+public class ArrayArtistAdapter extends ArrayAdapter<Artist> {
 
-    public ListArtistAdapter(Context context, List<Artist> artists) {
-        super(context, 0, artists);
+    public ArrayArtistAdapter(Context context, List<Artist> artistList) {
+        super(context, 0, artistList);
     }
 
     private static class ViewHolder {
-        TextView artistTextView;
+        TextView artistNameTextView;
+        TextView albumNumTextView;
 
         public ViewHolder(View view) {
-            artistTextView = (TextView) view.findViewById(R.id.artist_name);
+            artistNameTextView = (TextView) view.findViewById(R.id.artist_name);
+            albumNumTextView = (TextView) view.findViewById(R.id.album_num);
         }
     }
 
@@ -38,7 +40,9 @@ public class ListArtistAdapter extends ArrayAdapter<Artist> {
         }
 
         Artist artist = getItem(position);
-        holder.artistTextView.setText(artist.getArtist());
+        holder.artistNameTextView.setText(artist.getArtist());
+        holder.albumNumTextView.setText(getContext().getResources()
+                .getQuantityString(R.plurals.album_num, artist.getAlbumNum(), artist.getAlbumNum()));
 
         return convertView;
     }

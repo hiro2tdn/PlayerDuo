@@ -82,7 +82,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Uri _uri = Uri.parse(_url);
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
             return true;
-        case R.id.menu_memo:
+        case R.id.menu_readme:
             Toast.makeText(this, "出来る事\nContentProviderの音楽再生\nm4aの歌詞表示", Toast.LENGTH_SHORT).show();
             return true;
         }

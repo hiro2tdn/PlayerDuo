@@ -2,19 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/artist_name"
-        android:layout_width="0dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:text="@string/dummy_artist_name"
         android:scrollHorizontally="true"
 		android:ellipsize="end"
 		android:singleLine="true"
+        android:text="@string/dummy_artist_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/album_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/dummy_album_num"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

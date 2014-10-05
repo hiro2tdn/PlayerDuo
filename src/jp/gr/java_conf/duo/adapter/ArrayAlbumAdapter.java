@@ -12,22 +12,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/* リストアルバムアダプタ */
-public class ListAlbumAdapter extends ArrayAdapter<Album> {
+/* アルバム配列アダプタ */
+public class ArrayAlbumAdapter extends ArrayAdapter<Album> {
 
-    public ListAlbumAdapter(Context context, List<Album> albums) {
-        super(context, 0, albums);
+    public ArrayAlbumAdapter(Context context, List<Album> albumList) {
+        super(context, 0, albumList);
     }
 
     private static class ViewHolder {
-        TextView albumTextView;
-        TextView artistTextView;
-        ImageView artworkImageView;
+        TextView albumNameTextView;
+        TextView artistNameTextView;
+        ImageView albumArtImageView;
 
         public ViewHolder(View view) {
-            albumTextView = (TextView) view.findViewById(R.id.album_name);
-            artistTextView = (TextView) view.findViewById(R.id.artist_name);
-            artworkImageView = (ImageView) view.findViewById(R.id.albumart);
+            albumNameTextView = (TextView) view.findViewById(R.id.album_name);
+            artistNameTextView = (TextView) view.findViewById(R.id.artist_name);
+            albumArtImageView = (ImageView) view.findViewById(R.id.album_art);
         }
     }
 
@@ -44,13 +44,13 @@ public class ListAlbumAdapter extends ArrayAdapter<Album> {
         }
 
         Album album = getItem(position);
-        holder.albumTextView.setText(album.getAlbum());
-        holder.artistTextView.setText(album.getArtist());
-        holder.artworkImageView.setImageResource(R.drawable.dummy_album_art);
+        holder.albumNameTextView.setText(album.getAlbum());
+        holder.artistNameTextView.setText(album.getArtist());
+        holder.albumArtImageView.setImageResource(R.drawable.dummy_album_art);
 
         String path = album.getAlbumArt();
-        holder.artworkImageView.setTag(path);
-        ImageGetTask task = new ImageGetTask(holder.artworkImageView);
+        holder.albumArtImageView.setTag(path);
+        ImageGetTask task = new ImageGetTask(holder.albumArtImageView);
         task.execute(path);
 
         return convertView;

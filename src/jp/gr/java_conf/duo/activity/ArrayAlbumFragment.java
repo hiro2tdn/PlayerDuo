@@ -3,7 +3,7 @@ package jp.gr.java_conf.duo.activity;
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ListAlbumAdapter;
+import jp.gr.java_conf.duo.adapter.ArrayAlbumAdapter;
 import jp.gr.java_conf.duo.domain.Album;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-/* アルバムリストフラグメント */
-public class ListAlbumFragment extends Fragment {
+/* アルバム配列フラグメント */
+public class ArrayAlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ListAlbumFragment extends Fragment {
 
         // リストの設定
         List<Album> albumList = Album.getItemsByArtistId(activity, activity.artistId);
-        ListAlbumAdapter adapter = new ListAlbumAdapter(activity, albumList);
+        ArrayAlbumAdapter adapter = new ArrayAlbumAdapter(activity, albumList);
         ListView albumListView = (ListView) view.findViewById(R.id.list_album);
         albumListView.setAdapter(adapter);
 
@@ -42,9 +42,13 @@ public class ListAlbumFragment extends Fragment {
 
                 // ページ内容を再描画
                 activity.pagerAdapter.notifyDataSetChanged();
-                
-                // トラックページを表示
-                activity.viewPager.setCurrentItem(2);
+
+                // PLAYアクティビティへ値の受け渡し・起動
+                Intent intent = new Intent(activity, PlayActivity.class);
+                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId); // アーティストID
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId); // アルバムID
+                intent.putExtra(MainActivity.CONST_POSITION, 0); // ポジション
+                startActivity(intent);
             }
         });
 
@@ -60,12 +64,8 @@ public class ListAlbumFragment extends Fragment {
                 // ページ内容を再描画
                 activity.pagerAdapter.notifyDataSetChanged();
 
-                // PLAYアクティビティへ値の受け渡し・起動
-                Intent intent = new Intent(activity, PlayActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId);   // アーティストID
-                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId);     // アルバムID
-                intent.putExtra(MainActivity.CONST_POSITION, 0);                    // ポジション
-                startActivity(intent);
+                // トラックページを表示
+                activity.viewPager.setCurrentItem(2);
 
                 return true;
             }

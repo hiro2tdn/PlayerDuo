@@ -1,9 +1,9 @@
 package jp.gr.java_conf.duo.adapter;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.activity.ListAlbumFragment;
-import jp.gr.java_conf.duo.activity.ListArtistFragment;
-import jp.gr.java_conf.duo.activity.ListTrackFragment;
+import jp.gr.java_conf.duo.activity.ArrayAlbumFragment;
+import jp.gr.java_conf.duo.activity.ArrayArtistFragment;
+import jp.gr.java_conf.duo.activity.ArrayTrackFragment;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,13 +24,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
         case 0:
-            fragment = new ListArtistFragment();
+            fragment = new ArrayArtistFragment();
             break;
         case 1:
-            fragment = new ListAlbumFragment();
+            fragment = new ArrayAlbumFragment();
             break;
         case 2:
-            fragment = new ListTrackFragment();
+            fragment = new ArrayTrackFragment();
             break;
         }
 
