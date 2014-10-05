@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 /* アーティスト配列フラグメント */
@@ -42,7 +41,7 @@ public class ArrayArtistFragment extends Fragment {
                 activity.albumId = 0;
 
                 // ページ内容を再描画
-                activity.pagerAdapter.notifyDataSetChanged();
+                // activity.pagerAdapter.notifyDataSetChanged();
 
                 // PLAYアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(activity, PlayActivity.class);
@@ -53,6 +52,7 @@ public class ArrayArtistFragment extends Fragment {
             }
         });
 
+        /*
         // リストロングクリック時の動作設定
         artistListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
@@ -72,6 +72,7 @@ public class ArrayArtistFragment extends Fragment {
                 return true;
             }
         });
+        */
 
         return view;
     }

@@ -8,9 +8,9 @@
         android:id="@+id/track_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:scrollHorizontally="true"
-		android:ellipsize="end"
-		android:singleLine="true"
+        android:singleLine="true"
         android:text="@string/dummy_track_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

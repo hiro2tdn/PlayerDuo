@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 /* アルバム配列フラグメント */
@@ -41,7 +40,7 @@ public class ArrayAlbumFragment extends Fragment {
                 activity.albumId = album.getId();
 
                 // ページ内容を再描画
-                activity.pagerAdapter.notifyDataSetChanged();
+                // activity.pagerAdapter.notifyDataSetChanged();
 
                 // PLAYアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(activity, PlayActivity.class);
@@ -52,6 +51,7 @@ public class ArrayAlbumFragment extends Fragment {
             }
         });
 
+        /*
         // リストロングクリック時の動作設定
         albumListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
@@ -70,6 +70,7 @@ public class ArrayAlbumFragment extends Fragment {
                 return true;
             }
         });
+        */
 
         return view;
     }
