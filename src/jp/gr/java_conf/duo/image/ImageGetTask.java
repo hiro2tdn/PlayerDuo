@@ -19,11 +19,9 @@ public class ImageGetTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... params) {
         String path = params[0];
-
-        // キャッシュからイメージ取得
+        // キャッシュからイメージを取得する
         Bitmap bitmap = ImageCache.getImage(path);
-
-        // キャッシュにイメージが無い場合はイメージを作成してキャッシュに登録
+        // キャッシュにイメージが無い場合はイメージを作成してキャッシュに登録する
         if (bitmap == null) {
             bitmap = decodeBitmap(path);
             ImageCache.setImage(path, bitmap);
@@ -41,7 +39,7 @@ public class ImageGetTask extends AsyncTask<String, Void, Bitmap> {
         }
     }
 
-    // 48px * 48px の画像を作成する
+    /* 48px * 48px の画像を作成する */
     public static Bitmap decodeBitmap(String path) {
         // 作成する画像のサイズ
         int w = 144;

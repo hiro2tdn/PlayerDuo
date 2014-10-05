@@ -21,30 +21,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final String CONST_ALBUM_ID = "ALBUM_ID";
     public static final String CONST_POSITION = "POSITION";
 
-    public MainPagerAdapter pagerAdapter;
-    public ViewPager viewPager;
-    public long artistId;
-    public long albumId;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // OSによる停止時の状態を復元
-        if (savedInstanceState != null) {
-            artistId = savedInstanceState.getLong(CONST_ARTIST_ID);
-            albumId = savedInstanceState.getLong(CONST_ALBUM_ID);
-        }
-
         // ActionBarのモードをタブモードに切り替える
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // FragmentPagerAdapterを継承したクラスのアダプターを作成する
-        pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
+        MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
 
-        // ViewPagerにSectionPagerAdapterをセットする
+        // ViewPagerにSectionPagerAdapterを設定する
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
 
@@ -111,15 +102,5 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    /* OSによる停止時の処理 */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // 現在の状態を保存
-        outState.putLong(CONST_ARTIST_ID, artistId);
-        outState.putLong(CONST_ALBUM_ID, albumId);
     }
 }

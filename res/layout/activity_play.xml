@@ -14,6 +14,9 @@
        	    android:id="@+id/track_name"
        	    android:layout_width="wrap_content"
        	    android:layout_height="wrap_content"
+       	    android:ellipsize="end"
+	        android:scrollHorizontally="true"
+	        android:singleLine="true"
        	    android:text="@string/dummy_track_name"
        	    android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -27,6 +30,9 @@
 	    	    android:layout_width="0dip"
 	    	    android:layout_height="wrap_content"
 	    	    android:layout_weight="1"
+	    	  	android:ellipsize="end"
+	        	android:scrollHorizontally="true"
+	        	android:singleLine="true"
 	    	    android:text="@string/dummy_artist_name"
 	    	    android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -34,6 +40,9 @@
 	   		    android:id="@+id/track_no"
 	   		    android:layout_width="wrap_content"
 	   		    android:layout_height="wrap_content"
+	   		    android:ellipsize="end"
+	        	android:scrollHorizontally="true"
+	        	android:singleLine="true"
 	   		    android:text="@string/dummy_track_no"
 	   		    android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -48,6 +57,9 @@
 	            android:layout_width="0dip"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
+	            android:ellipsize="end"
+	        	android:scrollHorizontally="true"
+	        	android:singleLine="true"
 	            android:text="@string/dummy_album_name"
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -56,6 +68,9 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/dummy_duration"
+	            android:ellipsize="end"
+	        	android:scrollHorizontally="true"
+	        	android:singleLine="true"
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </LinearLayout>
@@ -74,6 +89,45 @@
             android:layout_height="wrap_content"
             android:text="@string/dummy_lyric"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playPanel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btn_minus30"
+            style="?android:attr/buttonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_minus30" />
+
+        <Button
+            android:id="@+id/btn_minus5"
+            style="?android:attr/buttonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_minus5" />
+
+        <Button
+            android:id="@+id/btn_plus5"
+            style="?android:attr/buttonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_plus5" />
+
+        <Button
+            android:id="@+id/btn_plus30"
+            style="?android:attr/buttonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_plus30" />
 
     </LinearLayout>
 

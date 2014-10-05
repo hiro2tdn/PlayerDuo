@@ -1,6 +1,7 @@
 package jp.gr.java_conf.duo.activity;
 
 import java.util.List;
+import java.util.Locale;
 
 import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.domain.Track;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 public class PlayActivity extends FragmentActivity {
 
     private MediaPlayer mp;
+    private boolean isPause; // 一時停止フラグ
+    private boolean isRepeat; // 連続再生フラグ
     private List<Track> trackList;
     private int position;
     private long artistId;
@@ -28,7 +31,6 @@ public class PlayActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-
 
         // OSによる停止時の状態を復元
         if (savedInstanceState != null) {
@@ -52,13 +54,55 @@ public class PlayActivity extends FragmentActivity {
             trackList = Track.getItems(this);
         }
 
+        // -30ボタンの動作設定
+        findViewById(R.id.btn_minus30).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mp.seekTo(Math.max(0, mp.getCurrentPosition() - 30000)); // 30秒戻す
+                setTextView(); // TextViewを設定する
+            }
+        });
+
+        // -5ボタンの動作設定
+        findViewById(R.id.btn_minus5).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mp.seekTo(Math.max(0, mp.getCurrentPosition() - 5000)); // 5秒戻す
+                setTextView(); // TextViewを設定する
+            }
+        });
+
+        // +5ボタンの動作設定
+        findViewById(R.id.btn_plus5).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 5000)); // 5秒進む
+                setTextView(); // TextViewを設定する
+            }
+        });
+
+        // +30ボタンの動作設定
+        findViewById(R.id.btn_plus30).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 30000)); // 30秒進む
+                setTextView();// TextViewを設定する
+            }
+        });
+
         // PLAYボタンの動作設定
         final Button mBtnPlay = (Button) findViewById(R.id.btn_play);
         mBtnPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 現在の曲を再生する
-                playMusic();
+                if (isPause) {
+                    isPause = false; // 一時停止フラグを解除する
+                    isRepeat = true; // 連続再生フラグを設定する
+                    mp.start(); // MPをPlaybackCompleted状態にする
+                } else if (!mp.isPlaying()) {
+                    playMusic(); // 曲を再生する
+                }
+                setTextView(); // TextViewを設定する
             }
         });
 
@@ -66,119 +110,122 @@ public class PlayActivity extends FragmentActivity {
         findViewById(R.id.btn_stop).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 曲を停止する
-                if (mp != null && mp.isPlaying()) {
-                    mp.stop();
+                if (!isPause) {
+                    isPause = true; // 一時停止フラグを設定する
+                    isRepeat = false; // 連続再生フラグを解除する
+                    mp.pause(); // MPをPaused状態にする
                 }
+                setTextView(); // TextViewを設定する
             }
         });
 
-        // LEFTボタンの動作設定
+        // 左ボタンの動作設定
         findViewById(R.id.btn_left).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 前の曲に遷移する
+                // 曲の位置を１つ前に設定する
                 if (position <= 0) {
                     position = trackList.size() - 1;
                 } else {
                     position--;
                 }
-
-                // TextViewの設定
-                setTextView();
-
-                // 再生中の場合、前の曲を再生する
-                if (mp != null && mp.isPlaying()) {
-                    playMusic();
-                }
+                moveRightOrLeft(); // RIGHTボタン、LEFTボタンの共通処理
             }
         });
 
-        // RIGHTボタンの動作設定
-        final Button mBtmRight = (Button) findViewById(R.id.btn_right);
-        mBtmRight.setOnClickListener(new OnClickListener() {
+        // 右ボタンの動作設定
+        final Button mBtnRight = (Button) findViewById(R.id.btn_right);
+        mBtnRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 次の曲に遷移する
+                // 曲の位置を１つ後に設定する
                 if (position >= trackList.size() - 1) {
                     position = 0;
                 } else {
                     position++;
                 }
-
-                // TextViewの設定
-                setTextView();
-
-                // 再生中の場合、次の曲を再生する
-                if (mp != null && mp.isPlaying()) {
-                    playMusic();
-                }
+                moveRightOrLeft(); // 右ボタン、左ボタンの共通処理
             }
         });
 
-        // MediaPlayerの初期化
+        // MPの初期化
         mp = new MediaPlayer();
 
-        // MediaPlayerの演奏準備が完了した時の動作設定
+        // MPの再生準備が完了した時の動作設定
         mp.setOnPreparedListener(new OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                // 0秒目から曲を再生する
                 if (mp != null) {
-                    mp.seekTo(0);
-                    mp.start();
+                    mp.start(); // MPをPlaybackCompleted状態にする
                 }
             }
         });
 
-        // MediaPlayerの演奏が終了した時の動作設定
+        // MPの再生が終了した時の動作設定
         mp.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mBtmRight.performClick();
-                mBtnPlay.performClick();
+                if (isRepeat) {
+                    mBtnRight.performClick();
+                    mBtnPlay.performClick();
+                }
             }
         });
 
-        // TextViewの設定
-        setTextView();
-
-        // 曲を再生する
-        playMusic();
+        mBtnPlay.performClick();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (mp != null) {
-            mp.reset();
-            mp.release();
-            mp = null;
+    /* 新しい曲を再生する */
+    private void playMusic() {
+        isPause = false; // 一時停止フラグを解除する
+        isRepeat = true; // 連続再生フラグを設定する
+        mp.reset(); // MPをIdle状態にする
+        try {
+            mp.setDataSource(getApplicationContext(), trackList.get(position).getUri()); // MPをInitialized状態にする
+            mp.prepare(); // MPをPrepared状態にする
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    /* TextViewの設定 */
+    /* 右ボタン、左ボタンの共通処理 */
+    private void moveRightOrLeft() {
+        if (isPause) {
+            isPause = false; // 一時停止フラグを解除する
+            isRepeat = false; // 連続再生フラグを解除する
+            mp.seekTo(0); // 曲位置を先頭に移動する
+            mp.stop(); // MPをStopped状態にする
+        } else if (mp.isPlaying()) {
+            playMusic(); // 曲を再生する
+        }
+        setTextView(); // TextViewを設定する
+    }
+
+    /* TextViewを設定する */
     private void setTextView() {
         Track track = trackList.get(position);
         ((TextView) findViewById(R.id.track_name)).setText(track.getTitle());
         ((TextView) findViewById(R.id.artist_name)).setText(track.getArtist());
         ((TextView) findViewById(R.id.album_name)).setText(track.getAlbum());
-        ((TextView) findViewById(R.id.duration)).setText(track.getViewDuration());
-        ((TextView) findViewById(R.id.track_no)).setText(
-                new StringBuffer().append(position + 1).append("/").append(trackList.size()));
+        ((TextView) findViewById(R.id.duration)).setText(makeViewPosition(mp.getCurrentPosition()));
+        ((TextView) findViewById(R.id.track_no)).setText(new StringBuffer().append(position + 1).append("/").append(trackList.size()));
         ((TextView) findViewById(R.id.lyric)).setText(track.getLyric());
     }
 
-    /* 曲を再生する */
-    private void playMusic() {
-        // 曲の設定・準備
-        mp.reset();
-        try {
-            mp.setDataSource(getApplicationContext(), trackList.get(position).getUri());
-            mp.prepare();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private String makeViewPosition(int pos) {
+        long dm = pos / 60000;
+        long ds = (pos - (dm * 60000)) / 1000;
+        return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
+    }
+
+    /* Activity停止時の処理 */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mp != null) {
+            mp.reset(); // MPをIdle状態にする
+            mp.release(); // MPをEnd状態にする
+            mp = null;
         }
     }
 
@@ -186,7 +233,6 @@ public class PlayActivity extends FragmentActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // 現在の状態を保存
         outState.putLong(MainActivity.CONST_ARTIST_ID, artistId);
         outState.putLong(MainActivity.CONST_ALBUM_ID, albumId);

@@ -11,9 +11,13 @@
 
     <!-- Menu -->
 	<string name="menu_scan_sdcard">SCAN SD CARD</string>
-	<string name="menu_readme">README</string>
+	<string name="menu_readme">READ ME</string>
 
     <!-- Button -->
+    <string name="btn_minus30">-30</string>
+    <string name="btn_minus5">-5</string>
+    <string name="btn_plus5">+5</string>
+    <string name="btn_plus30">+30</string>
     <string name="btn_play">PLAY</string>
     <string name="btn_stop">STOP</string>
     <string name="btn_back">&lt;</string>

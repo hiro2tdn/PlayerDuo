@@ -4,8 +4,11 @@ import java.util.List;
 
 import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.domain.Album;
+import jp.gr.java_conf.duo.image.ImageCache;
 import jp.gr.java_conf.duo.image.ImageGetTask;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -46,9 +49,20 @@ public class ArrayAlbumAdapter extends ArrayAdapter<Album> {
         Album album = getItem(position);
         holder.albumNameTextView.setText(album.getAlbum());
         holder.artistNameTextView.setText(album.getArtist());
-        holder.albumArtImageView.setImageResource(R.drawable.dummy_album_art);
+        holder.albumArtImageView.setImageResource(R.drawable.dummy_album_art_blank);
 
         String path = album.getAlbumArt();
+        if (path == null) {
+            path = String.valueOf(R.drawable.dummy_album_art);
+            // キャッシュからイメージを取得する
+            Bitmap bitmap = ImageCache.getImage(path);
+            // キャッシュにイメージが無い場合はイメージを作成してキャッシュに登録する
+            if (bitmap == null) {
+                bitmap = BitmapFactory.decodeResource(super.getContext().getResources(), R.drawable.dummy_album_art);
+                ImageCache.setImage(path, bitmap);
+            }
+        }
+
         holder.albumArtImageView.setTag(path);
         ImageGetTask task = new ImageGetTask(holder.albumArtImageView);
         task.execute(path);

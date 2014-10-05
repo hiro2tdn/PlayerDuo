@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 /* アルバム配列フラグメント */
@@ -25,8 +24,8 @@ public class ArrayAlbumFragment extends Fragment {
         View view = inflater.inflate(R.layout.list_album, container, false);
         final MainActivity activity = (MainActivity) super.getActivity();
 
-        // リストの設定
-        List<Album> albumList = Album.getItemsByArtistId(activity, activity.artistId);
+        // アルバムリストを設定する
+        List<Album> albumList = Album.getItems(activity);
         ArrayAlbumAdapter adapter = new ArrayAlbumAdapter(activity, albumList);
         ListView albumListView = (ListView) view.findViewById(R.id.list_album);
         albumListView.setAdapter(adapter);
@@ -35,39 +34,16 @@ public class ArrayAlbumFragment extends Fragment {
         albumListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // クリックした情報をActivityに保存
+                // クリックした情報を取得する
                 ListView lv = (ListView) parent;
                 Album album = (Album) lv.getItemAtPosition(position);
-                activity.albumId = album.getId();
-
-                // ページ内容を再描画
-                activity.pagerAdapter.notifyDataSetChanged();
 
                 // PLAYアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(activity, PlayActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId); // アーティストID
-                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId); // アルバムID
+                intent.putExtra(MainActivity.CONST_ARTIST_ID, 0); // アーティストID
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, album.getId()); // アルバムID
                 intent.putExtra(MainActivity.CONST_POSITION, 0); // ポジション
                 startActivity(intent);
-            }
-        });
-
-        // リストロングクリック時の動作設定
-        albumListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // クリックした情報をActivityに保存
-                ListView lv = (ListView) parent;
-                Album album = (Album) lv.getItemAtPosition(position);
-                activity.albumId = album.getId();
-
-                // ページ内容を再描画
-                activity.pagerAdapter.notifyDataSetChanged();
-
-                // トラックページを表示
-                activity.viewPager.setCurrentItem(2);
-
-                return true;
             }
         });
 

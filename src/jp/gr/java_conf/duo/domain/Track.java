@@ -3,7 +3,6 @@ package jp.gr.java_conf.duo.domain;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -163,12 +162,6 @@ public class Track {
 
     public long getDuration() {
         return duration;
-    }
-
-    public String getViewDuration() {
-        long dm = duration / 60000;
-        long ds = (duration - (dm * 60000)) / 1000;
-        return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
     }
 
     public void setDuration(long duration) {

@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 /* トラック配列フラグメント */
 public class ArrayTrackFragment extends Fragment {
@@ -24,13 +24,8 @@ public class ArrayTrackFragment extends Fragment {
         View view = inflater.inflate(R.layout.list_track, container, false);
         final MainActivity activity = (MainActivity) super.getActivity();
 
-        // リストの設定
-        List<Track> trackList = null;
-        if (activity.albumId != 0) {
-            trackList = Track.getItemsByAlbumId(activity, activity.albumId);
-        } else {
-            trackList = Track.getItemsByArtistId(activity, activity.artistId);
-        }
+        // トラックリストを設定する
+        List<Track> trackList = Track.getItems(activity);
         ArrayTrackAdapter adapter = new ArrayTrackAdapter(activity, trackList);
         ListView trackListView = (ListView) view.findViewById(R.id.list_track);
         trackListView.setAdapter(adapter);
@@ -39,11 +34,26 @@ public class ArrayTrackFragment extends Fragment {
         trackListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // クリックした情報を取得する
+                ListView lv = (ListView) parent;
+                Track track = (Track) lv.getItemAtPosition(position);
+
                 // PLAYアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(activity, PlayActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, activity.artistId); // アーティストID
-                intent.putExtra(MainActivity.CONST_ALBUM_ID, activity.albumId); // アルバムID
-                intent.putExtra(MainActivity.CONST_POSITION, position); // ポジション
+                intent.putExtra(MainActivity.CONST_ARTIST_ID, track.getArtistId()); // アーティストID
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, track.getAlbumId()); // アルバムID
+
+                // トラックリストを再取得して再取得後のポジションを設定する
+                List<Track> trackList = Track.getItemsByAlbumId(activity, track.getAlbumId());
+                int position2 = 0;
+                for (Track track2 : trackList) {
+                    if (track.getId() == track2.getId()) {
+                        intent.putExtra(MainActivity.CONST_POSITION, position2); // ポジション
+                        break;
+                    }
+                    position2++;
+                }
+
                 startActivity(intent);
             }
         });
