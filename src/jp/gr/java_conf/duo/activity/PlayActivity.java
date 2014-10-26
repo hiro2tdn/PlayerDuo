@@ -20,8 +20,8 @@ import android.widget.TextView;
 public class PlayActivity extends FragmentActivity {
 
     private MediaPlayer mp;
-    private boolean isPause; // 一時停止フラグ
-    private boolean isRepeat; // 連続再生フラグ
+    private boolean isPaused; // 一時停止中フラグ
+    private boolean isPlayNext; // 次再生フラグ
     private List<Track> trackList;
     private int position;
     private long artistId;
@@ -54,66 +54,75 @@ public class PlayActivity extends FragmentActivity {
             trackList = Track.getItems(this);
         }
 
-        // -30ボタンの動作設定
-        findViewById(R.id.btn_minus30).setOnClickListener(new OnClickListener() {
+        // -20sボタンの動作設定
+        findViewById(R.id.btn_minus20).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.seekTo(Math.max(0, mp.getCurrentPosition() - 30000)); // 30秒戻す
-                setTextView(); // TextViewを設定する
+                if (mp.isPlaying()) {
+                    mp.seekTo(Math.max(0, mp.getCurrentPosition() - 20000)); // 再生時間を20秒戻す
+                    setTextView(); // TextViewを設定する
+                }
             }
         });
 
-        // -5ボタンの動作設定
+        // -5sボタンの動作設定
         findViewById(R.id.btn_minus5).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.seekTo(Math.max(0, mp.getCurrentPosition() - 5000)); // 5秒戻す
-                setTextView(); // TextViewを設定する
+                if (mp.isPlaying()) {
+                    mp.seekTo(Math.max(0, mp.getCurrentPosition() - 5000)); // 再生時間を5秒戻す
+                    setTextView(); // TextViewを設定する
+                }
             }
         });
 
-        // +5ボタンの動作設定
+        // +5sボタンの動作設定
         findViewById(R.id.btn_plus5).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 5000)); // 5秒進む
-                setTextView(); // TextViewを設定する
+                if (mp.isPlaying()) {
+                    mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 5000)); // 再生時間を5秒進める
+                    setTextView(); // TextViewを設定する
+                }
             }
         });
 
-        // +30ボタンの動作設定
-        findViewById(R.id.btn_plus30).setOnClickListener(new OnClickListener() {
+        // +20sボタンの動作設定
+        findViewById(R.id.btn_plus20).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 30000)); // 30秒進む
-                setTextView();// TextViewを設定する
+                if (mp.isPlaying()) {
+                    mp.seekTo(Math.min(mp.getDuration(), mp.getCurrentPosition() + 20000)); // 再生時間を20秒進める
+                    setTextView();// TextViewを設定する
+                }
             }
         });
 
-        // PLAYボタンの動作設定
+        // PLAY・PAUSEボタンの動作設定
         final Button mBtnPlay = (Button) findViewById(R.id.btn_play);
         mBtnPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPause) {
-                    isPause = false; // 一時停止フラグを解除する
-                    isRepeat = true; // 連続再生フラグを設定する
-                    mp.start(); // MPをPlaybackCompleted状態にする
-                } else if (!mp.isPlaying()) {
-                    playMusic(); // 曲を再生する
-                }
-                setTextView(); // TextViewを設定する
-            }
-        });
-
-        // STOPボタンの動作設定
-        findViewById(R.id.btn_stop).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isPause) {
-                    isPause = true; // 一時停止フラグを設定する
-                    isRepeat = false; // 連続再生フラグを解除する
+                if (mp.isPlaying()) {
+                    // 再生を一時停止にする
+                    mBtnPlay.setText(R.string.btn_play);
+                    isPaused = true; // 一時停止中フラグを設定する
+                    isPlayNext = false; // 次再生フラグを解除する
                     mp.pause(); // MPをPaused状態にする
+                } else {
+                    if (isPaused) {
+                        // 一時停止を再生にする
+                        mBtnPlay.setText(R.string.btn_pause);
+                        isPaused = false; // 一時停止中フラグを解除する
+                        isPlayNext = true; // 次再生フラグを設定する
+                        mp.start(); // MPをPlaybackCompleted状態にする
+                    } else {
+                        // 停止を再生にする
+                        mBtnPlay.setText(R.string.btn_pause);
+                        isPaused = false; // 一時停止中フラグを解除する
+                        isPlayNext = true; // 次再生フラグを設定する
+                        playMusic(); // 曲を再生する
+                    }
                 }
                 setTextView(); // TextViewを設定する
             }
@@ -129,7 +138,7 @@ public class PlayActivity extends FragmentActivity {
                 } else {
                     position--;
                 }
-                moveRightOrLeft(); // RIGHTボタン、LEFTボタンの共通処理
+                moveRightOrLeft(); // 右️ボタン、左ボタンの共通処理
             }
         });
 
@@ -165,7 +174,7 @@ public class PlayActivity extends FragmentActivity {
         mp.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                if (isRepeat) {
+                if (isPlayNext) {
                     mBtnRight.performClick();
                     mBtnPlay.performClick();
                 }
@@ -177,8 +186,8 @@ public class PlayActivity extends FragmentActivity {
 
     /* 新しい曲を再生する */
     private void playMusic() {
-        isPause = false; // 一時停止フラグを解除する
-        isRepeat = true; // 連続再生フラグを設定する
+        isPaused = false; // 一時停止中フラグを解除する
+        isPlayNext = true; // 次再生フラグを設定する
         mp.reset(); // MPをIdle状態にする
         try {
             mp.setDataSource(getApplicationContext(), trackList.get(position).getUri()); // MPをInitialized状態にする
@@ -190,13 +199,15 @@ public class PlayActivity extends FragmentActivity {
 
     /* 右ボタン、左ボタンの共通処理 */
     private void moveRightOrLeft() {
-        if (isPause) {
-            isPause = false; // 一時停止フラグを解除する
-            isRepeat = false; // 連続再生フラグを解除する
-            mp.seekTo(0); // 曲位置を先頭に移動する
-            mp.stop(); // MPをStopped状態にする
-        } else if (mp.isPlaying()) {
+        if (mp.isPlaying()) {
             playMusic(); // 曲を再生する
+        } else {
+            if (isPaused) {
+                isPaused = false; // 一時停止中フラグを解除する
+                isPlayNext = false; // 次再生フラグを解除する
+                mp.seekTo(0); // 再生時間を0秒に設定する
+                mp.stop(); // MPをStopped状態にする
+            }
         }
         setTextView(); // TextViewを設定する
     }

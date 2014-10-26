@@ -4,9 +4,9 @@
 
 	<!-- Pager -->
 	<string-array name="titles">
-        <item>ARTISTS</item>
-        <item>ALBUMS</item>
-        <item>TRACKS</item>
+        <item>アーティスト</item>
+        <item>アルバム</item>
+        <item>トラック</item>
     </string-array>
 
     <!-- Menu -->
@@ -14,26 +14,26 @@
 	<string name="menu_readme">READ ME</string>
 
     <!-- Button -->
-    <string name="btn_minus30">-30</string>
-    <string name="btn_minus5">-5</string>
-    <string name="btn_plus5">+5</string>
-    <string name="btn_plus30">+30</string>
+    <string name="btn_minus20">-20s</string>
+    <string name="btn_minus5">-5s</string>
+    <string name="btn_plus5">+5s</string>
+    <string name="btn_plus20">+20s</string>
     <string name="btn_play">PLAY</string>
-    <string name="btn_stop">STOP</string>
+    <string name="btn_pause">PAUSE</string>
     <string name="btn_back">&lt;</string>
     <string name="btn_next">&gt;</string>
 
     <!-- 複数形対応。日本語では常にotherになるので無意味 -->
     <plurals name="album_num">
-        <item quantity="one">%1$d album</item>
-        <item quantity="other">%1$d albums</item>
+        <item quantity="one">%1$d アルバム</item>
+        <item quantity="other">%1$d アルバム</item>
     </plurals>
 
     <!-- Other -->
 	<string name="dummy_track_name">トラック名</string>
 	<string name="dummy_artist_name">アーティスト名</string>
     <string name="dummy_album_name">アルバム名</string>
-    <string name="dummy_album_num">0 albums</string>
+    <string name="dummy_album_num">0 アルバム</string>
    	<string name="dummy_lyric">歌詞</string>
   	<string name="dummy_track_no">0/0</string>
 	<string name="dummy_duration">0:00</string>

@@ -98,12 +98,12 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/btn_minus30"
+            android:id="@+id/btn_minus20"
             style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_minus30" />
+            android:text="@string/btn_minus20" />
 
         <Button
             android:id="@+id/btn_minus5"
@@ -122,12 +122,12 @@
             android:text="@string/btn_plus5" />
 
         <Button
-            android:id="@+id/btn_plus30"
+            android:id="@+id/btn_plus20"
             style="?android:attr/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_plus30" />
+            android:text="@string/btn_plus20" />
 
     </LinearLayout>
 
@@ -150,15 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_play" />
-
-        <Button
-            android:id="@+id/btn_stop"
-            style="?android:attr/buttonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_stop" />
+            android:text="@string/btn_pause" />
 
         <Button
             android:id="@+id/btn_right"

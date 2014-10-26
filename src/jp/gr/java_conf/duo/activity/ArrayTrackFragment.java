@@ -45,13 +45,13 @@ public class ArrayTrackFragment extends Fragment {
 
                 // トラックリストを再取得して再取得後のポジションを設定する
                 List<Track> trackList = Track.getItemsByAlbumId(activity, track.getAlbumId());
-                int position2 = 0;
-                for (Track track2 : trackList) {
-                    if (track.getId() == track2.getId()) {
-                        intent.putExtra(MainActivity.CONST_POSITION, position2); // ポジション
+                int positionNew = 0;
+                for (Track trackNew : trackList) {
+                    if (track.getId() == trackNew.getId()) {
+                        intent.putExtra(MainActivity.CONST_POSITION, positionNew); // ポジション
                         break;
                     }
-                    position2++;
+                    positionNew++;
                 }
 
                 startActivity(intent);
