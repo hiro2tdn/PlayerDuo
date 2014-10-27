@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-/* PLAYアクティビティ */
+/* プレイアクティビティ */
 public class PlayActivity extends FragmentActivity {
 
     private MediaPlayer mp;
