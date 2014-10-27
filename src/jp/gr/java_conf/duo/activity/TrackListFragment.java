@@ -3,7 +3,7 @@ package jp.gr.java_conf.duo.activity;
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ArrayTrackAdapter;
+import jp.gr.java_conf.duo.adapter.TrackArrayAdapter;
 import jp.gr.java_conf.duo.domain.Track;
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* トラック配列フラグメント */
-public class ArrayTrackFragment extends Fragment {
+/* トラックリストフラグメント */
+public class TrackListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class ArrayTrackFragment extends Fragment {
 
         // トラックリストを設定する
         List<Track> trackList = Track.getItemsByAlbumId(context, albumId);
-        ListAdapter listAdapter = new ArrayTrackAdapter(context, trackList);
+        ListAdapter listAdapter = new TrackArrayAdapter(context, trackList);
         ListView listView = (ListView) view.findViewById(R.id.list_track);
         listView.setAdapter(listAdapter);
 

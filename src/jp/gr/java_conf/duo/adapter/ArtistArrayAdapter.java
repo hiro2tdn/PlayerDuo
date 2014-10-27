@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /* アーティスト配列アダプタ */
-public class ArrayArtistAdapter extends ArrayAdapter<Artist> {
+public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
 
-    public ArrayArtistAdapter(Context context, List<Artist> artistList) {
+    public ArtistArrayAdapter(Context context, List<Artist> artistList) {
         super(context, 0, artistList);
     }
 

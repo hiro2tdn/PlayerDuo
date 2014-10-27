@@ -3,7 +3,7 @@ package jp.gr.java_conf.duo.activity;
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ArrayAlbumAdapter;
+import jp.gr.java_conf.duo.adapter.AlbumArrayAdapter;
 import jp.gr.java_conf.duo.domain.Album;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +18,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* アルバム配列フラグメント */
-public class ArrayAlbumFragment extends Fragment {
+/* アルバムリストフラグメント */
+public class AlbumListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class ArrayAlbumFragment extends Fragment {
 
         // アルバムリストを設定する
         List<Album> albumList = Album.getItemsByArtistId(context, artistId);
-        ListAdapter listAdapter = new ArrayAlbumAdapter(context, albumList);
+        ListAdapter listAdapter = new AlbumArrayAdapter(context, albumList);
         ListView listView = (ListView) view.findViewById(R.id.list_album);
         listView.setAdapter(listAdapter);
 

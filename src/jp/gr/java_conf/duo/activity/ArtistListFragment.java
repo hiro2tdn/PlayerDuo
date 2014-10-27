@@ -3,7 +3,7 @@ package jp.gr.java_conf.duo.activity;
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ArrayArtistAdapter;
+import jp.gr.java_conf.duo.adapter.ArtistArrayAdapter;
 import jp.gr.java_conf.duo.domain.Artist;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +18,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* アーティスト配列フラグメント */
-public class ArrayArtistFragment extends Fragment {
+/* アーティストリストフラグメント */
+public class ArtistListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class ArrayArtistFragment extends Fragment {
 
         // アーティストリストを設定する
         List<Artist> artistList = Artist.getItems(context);
-        ListAdapter listAdapter = new ArrayArtistAdapter(context, artistList);
+        ListAdapter listAdapter = new ArtistArrayAdapter(context, artistList);
         ListView listView = (ListView) view.findViewById(R.id.list_artist);
         listView.setAdapter(listAdapter);
 

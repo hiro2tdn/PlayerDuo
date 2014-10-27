@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /* アルバム配列アダプタ */
-public class ArrayAlbumAdapter extends ArrayAdapter<Album> {
+public class AlbumArrayAdapter extends ArrayAdapter<Album> {
 
-    public ArrayAlbumAdapter(Context context, List<Album> albumList) {
+    public AlbumArrayAdapter(Context context, List<Album> albumList) {
         super(context, 0, albumList);
     }
 

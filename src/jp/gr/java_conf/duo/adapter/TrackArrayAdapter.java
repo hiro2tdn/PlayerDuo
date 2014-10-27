@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /* トラック配列アダプタ */
-public class ArrayTrackAdapter extends ArrayAdapter<Track> {
+public class TrackArrayAdapter extends ArrayAdapter<Track> {
 
-    public ArrayTrackAdapter(Context context, List<Track> trackList) {
+    public TrackArrayAdapter(Context context, List<Track> trackList) {
         super(context, 0, trackList);
     }
 

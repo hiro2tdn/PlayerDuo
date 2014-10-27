@@ -26,7 +26,7 @@ public class TrackActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putLong(MainActivity.CONST_ALBUM_ID, albumId);
 
-        Fragment fragment = new ArrayTrackFragment();
+        Fragment fragment = new TrackListFragment();
         fragment.setArguments(bundle);
         ft.add(R.id.container, fragment);
         ft.commit();

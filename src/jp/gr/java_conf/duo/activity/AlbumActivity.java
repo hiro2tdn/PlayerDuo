@@ -26,7 +26,7 @@ public class AlbumActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putLong(MainActivity.CONST_ARTIST_ID, artistId);
 
-        Fragment fragment = new ArrayAlbumFragment();
+        Fragment fragment = new AlbumListFragment();
         fragment.setArguments(bundle);
         ft.add(R.id.container, fragment);
         ft.commit();
