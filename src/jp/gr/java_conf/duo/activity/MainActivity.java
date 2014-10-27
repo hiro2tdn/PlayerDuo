@@ -3,19 +3,20 @@ package jp.gr.java_conf.duo.activity;
 import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.adapter.MainPagerAdapter;
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 /* メインアクティビティ */
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements TabListener {
 
     public static final String CONST_ARTIST_ID = "ARTIST_ID";
     public static final String CONST_ALBUM_ID = "ALBUM_ID";
@@ -28,12 +29,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ActionBarのモードをタブモードに切り替える
+        // ActionBarをタブモードに切り替える
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // FragmentPagerAdapterを継承したクラスのアダプターを作成する
-        MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
+        PagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
 
         // ViewPagerにSectionPagerAdapterを設定する
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -49,7 +50,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // ActionBarにタブを追加する
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
-            ActionBar.Tab tab = actionBar.newTab();
+            Tab tab = actionBar.newTab();
             tab.setText(pagerAdapter.getPageTitle(i));
             tab.setTabListener(this);
             actionBar.addTab(tab);
@@ -73,19 +74,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Uri _uri = Uri.parse(_url);
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
             return true;
-        case R.id.menu_readme:
-            Toast.makeText(this, "出来る事\nContentProviderの音楽再生\nm4aの歌詞表示", Toast.LENGTH_SHORT).show();
-            return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return onOptionsItemSelected(item);
     }
 
     /**
      * タブを選択した時の処理
      */
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
         // ページを切り替える
         viewPager.setCurrentItem(tab.getPosition());
     }
@@ -94,13 +92,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * タブの選択が外れた時の処理
      */
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
     }
 
     /**
      * 同じタブを再度選択した時の処理
      */
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
     }
 }

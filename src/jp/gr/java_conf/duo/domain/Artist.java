@@ -64,9 +64,9 @@ public class Artist {
     }
 
     /* 指定されたアーティスト取得 */
-    public static Artist getItemByArtistId(Context context, long id) {
+    public static Artist getItemByArtistId(Context context, long artistId) {
         String selection = MediaStore.Audio.Artists._ID + "= ?";
-        return getMyItems(context, selection, id).get(0);
+        return getMyItems(context, selection, artistId).get(0);
     }
 
     public long getId() {

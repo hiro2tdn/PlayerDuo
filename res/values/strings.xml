@@ -11,7 +11,6 @@
 
     <!-- Menu -->
 	<string name="menu_scan_sdcard">SCAN SD CARD</string>
-	<string name="menu_readme">READ ME</string>
 
     <!-- Button -->
     <string name="btn_minus20">-20s</string>

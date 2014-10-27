@@ -58,7 +58,7 @@ public class ArrayAlbumAdapter extends ArrayAdapter<Album> {
             Bitmap bitmap = ImageCache.getImage(path);
             // キャッシュにイメージが無い場合はイメージを作成してキャッシュに登録する
             if (bitmap == null) {
-                bitmap = BitmapFactory.decodeResource(super.getContext().getResources(), R.drawable.dummy_album_art);
+                bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.dummy_album_art);
                 ImageCache.setImage(path, bitmap);
             }
         }

@@ -21,7 +21,7 @@ public class PlayActivity extends FragmentActivity {
 
     private MediaPlayer mp;
     private boolean isPaused; // 一時停止中フラグ
-    private boolean isPlayNext; // 次再生フラグ
+    private boolean isPlayNext; // 連続再生フラグ
     private List<Track> trackList;
     private int position;
     private long artistId;
@@ -38,7 +38,7 @@ public class PlayActivity extends FragmentActivity {
             albumId = savedInstanceState.getLong(MainActivity.CONST_ALBUM_ID);
             position = savedInstanceState.getInt(MainActivity.CONST_POSITION);
         } else {
-            // MainActivityから値の受取
+            // 呼出元アクティビティから値の受取
             Intent intent = getIntent();
             artistId = intent.getLongExtra(MainActivity.CONST_ARTIST_ID, 0);
             albumId = intent.getLongExtra(MainActivity.CONST_ALBUM_ID, 0);
@@ -104,23 +104,23 @@ public class PlayActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (mp.isPlaying()) {
-                    // 再生を一時停止にする
+                    // 再生状態を一時停止状態にする
                     mBtnPlay.setText(R.string.btn_play);
                     isPaused = true; // 一時停止中フラグを設定する
-                    isPlayNext = false; // 次再生フラグを解除する
+                    isPlayNext = false; // 連続再生フラグを解除する
                     mp.pause(); // MPをPaused状態にする
                 } else {
                     if (isPaused) {
-                        // 一時停止を再生にする
+                        // 一時停止状態を再生状態にする
                         mBtnPlay.setText(R.string.btn_pause);
                         isPaused = false; // 一時停止中フラグを解除する
-                        isPlayNext = true; // 次再生フラグを設定する
+                        isPlayNext = true; // 連続再生フラグを設定する
                         mp.start(); // MPをPlaybackCompleted状態にする
                     } else {
-                        // 停止を再生にする
+                        // 停止状態を再生状態にする
                         mBtnPlay.setText(R.string.btn_pause);
                         isPaused = false; // 一時停止中フラグを解除する
-                        isPlayNext = true; // 次再生フラグを設定する
+                        isPlayNext = true; // 連続再生フラグを設定する
                         playMusic(); // 曲を再生する
                     }
                 }
@@ -187,7 +187,7 @@ public class PlayActivity extends FragmentActivity {
     /* 新しい曲を再生する */
     private void playMusic() {
         isPaused = false; // 一時停止中フラグを解除する
-        isPlayNext = true; // 次再生フラグを設定する
+        isPlayNext = true; // 連続再生フラグを設定する
         mp.reset(); // MPをIdle状態にする
         try {
             mp.setDataSource(getApplicationContext(), trackList.get(position).getUri()); // MPをInitialized状態にする
@@ -204,7 +204,7 @@ public class PlayActivity extends FragmentActivity {
         } else {
             if (isPaused) {
                 isPaused = false; // 一時停止中フラグを解除する
-                isPlayNext = false; // 次再生フラグを解除する
+                isPlayNext = false; // 連続再生フラグを解除する
                 mp.seekTo(0); // 再生時間を0秒に設定する
                 mp.stop(); // MPをStopped状態にする
             }

@@ -50,7 +50,7 @@ public class Album {
                 COLUMNS,
                 mSelection,
                 selectionArgs,
-                "ARTIST ASC, ALBUM ASC");
+                "ALBUM ASC");
 
         List<Album> albums = new ArrayList<Album>();
         while (cursor.moveToNext()) {
@@ -67,15 +67,15 @@ public class Album {
     }
 
     /* 指定されたアーティストのアルバム取得 */
-    public static List<Album> getItemsByArtistId(Context context, long id) {
+    public static List<Album> getItemsByArtistId(Context context, long artistId) {
         String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getMyItems(context, selection, id);
+        return getMyItems(context, selection, artistId);
     }
 
     /* 指定されたアルバム取得 */
-    public static Album getItemByAlbumId(Context context, long id) {
+    public static Album getItemByAlbumId(Context context, long albumId) {
         String selection = MediaStore.Audio.Albums._ID + "= ?";
-        return getMyItems(context, selection, id).get(0);
+        return getMyItems(context, selection, albumId).get(0);
     }
 
     public long getId() {

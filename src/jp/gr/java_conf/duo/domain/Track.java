@@ -70,7 +70,7 @@ public class Track {
                 COLUMNS,
                 mSelection,
                 selectionArgs,
-                "ARTIST ASC, ALBUM ASC, TRACK ASC");
+                "TITLE ASC");
 
         List<Track> tracks = new ArrayList<Track>();
         while (cursor.moveToNext()) {
@@ -87,21 +87,21 @@ public class Track {
     }
 
     /* 指定されたアーティストのトラック取得 */
-    public static List<Track> getItemsByArtistId(Context context, long id) {
+    public static List<Track> getItemsByArtistId(Context context, long artistId) {
         String selection = MediaStore.Audio.Media.ARTIST_ID + "= ?";
-        return getMyItems(context, selection, id);
+        return getMyItems(context, selection, artistId);
     }
 
     /* 指定されたアルバムのトラック取得 */
-    public static List<Track> getItemsByAlbumId(Context context, long id) {
+    public static List<Track> getItemsByAlbumId(Context context, long albumId) {
         String selection = MediaStore.Audio.Media.ALBUM_ID + "= ?";
-        return getMyItems(context, selection, id);
+        return getMyItems(context, selection, albumId);
     }
 
     /* 指定されたトラック取得 */
-    public static Track getItemByTrackId(Context context, long id) {
+    public static Track getItemByTrackId(Context context, long trackId) {
         String selection = MediaStore.Audio.Media._ID + "= ?";
-        return getMyItems(context, selection, id).get(0);
+        return getMyItems(context, selection, trackId).get(0);
     }
 
     public long getId() {

@@ -33,7 +33,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             fragment = new ArrayTrackFragment();
             break;
         }
-
         return fragment;
     }
 
