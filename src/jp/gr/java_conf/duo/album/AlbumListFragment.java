@@ -1,10 +1,11 @@
-package jp.gr.java_conf.duo.activity;
+package jp.gr.java_conf.duo.album;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.ArtistArrayAdapter;
-import jp.gr.java_conf.duo.domain.Artist;
+import jp.gr.java_conf.duo.main.MainActivity;
+import jp.gr.java_conf.duo.play.PlayActivity;
+import jp.gr.java_conf.duo.track.TrackActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,19 +19,25 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* アーティストリストフラグメント */
-public class ArtistListFragment extends Fragment {
+/* アルバムリストフラグメント */
+public class AlbumListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.list_artist, container, false);
+        View view = inflater.inflate(R.layout.list_album, container, false);
         final Context context = getActivity();
 
-        // アーティストリストを設定する
-        List<Artist> artistList = Artist.getItems(context);
-        ListAdapter listAdapter = new ArtistArrayAdapter(context, artistList);
-        ListView listView = (ListView) view.findViewById(R.id.list_artist);
+        // アーティストIDを取得する
+        long artistId = 0;
+        if (getArguments() != null) {
+            artistId = getArguments().getLong(MainActivity.CONST_ARTIST_ID, 0);
+        }
+
+        // アルバムリストを設定する
+        List<Album> albumList = Album.getItemsByArtistId(context, artistId);
+        ListAdapter listAdapter = new AlbumArrayAdapter(context, albumList);
+        ListView listView = (ListView) view.findViewById(R.id.list_album);
         listView.setAdapter(listAdapter);
 
         // リストクリック時の動作設定
@@ -39,11 +46,11 @@ public class ArtistListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // クリックした情報を取得する
                 ListView listView = (ListView) parent;
-                Artist artist = (Artist) listView.getItemAtPosition(position);
+                Album album = (Album) listView.getItemAtPosition(position);
 
                 // Albumアクティビティへ値の受け渡し・起動
-                Intent intent = new Intent(context, AlbumActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, artist.getId()); // アーティストID
+                Intent intent = new Intent(context, TrackActivity.class);
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, album.getId()); // アルバムID
                 startActivity(intent);
             }
         });
@@ -54,11 +61,11 @@ public class ArtistListFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // クリックした情報を取得する
                 ListView listView = (ListView) parent;
-                Artist artist = (Artist) listView.getItemAtPosition(position);
+                Album album = (Album) listView.getItemAtPosition(position);
 
                 // Playアクティビティへ値の受け渡し・起動
                 Intent intent = new Intent(context, PlayActivity.class);
-                intent.putExtra(MainActivity.CONST_ARTIST_ID, artist.getId()); // アーティストID
+                intent.putExtra(MainActivity.CONST_ALBUM_ID, album.getId()); // アルバムID
                 startActivity(intent);
 
                 return true;

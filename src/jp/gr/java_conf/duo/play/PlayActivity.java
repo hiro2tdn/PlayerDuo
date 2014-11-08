@@ -1,10 +1,11 @@
-package jp.gr.java_conf.duo.activity;
+package jp.gr.java_conf.duo.play;
 
 import java.util.List;
 import java.util.Locale;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.domain.Track;
+import jp.gr.java_conf.duo.main.MainActivity;
+import jp.gr.java_conf.duo.track.Track;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;

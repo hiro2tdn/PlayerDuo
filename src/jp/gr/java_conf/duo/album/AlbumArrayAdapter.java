@@ -1,9 +1,8 @@
-package jp.gr.java_conf.duo.adapter;
+package jp.gr.java_conf.duo.album;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.domain.Album;
 import jp.gr.java_conf.duo.image.ImageCache;
 import jp.gr.java_conf.duo.image.ImageGetTask;
 import android.content.Context;

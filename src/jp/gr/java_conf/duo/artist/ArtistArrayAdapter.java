@@ -1,9 +1,8 @@
-package jp.gr.java_conf.duo.adapter;
+package jp.gr.java_conf.duo.artist;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.domain.Artist;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

@@ -1,9 +1,9 @@
-package jp.gr.java_conf.duo.adapter;
+package jp.gr.java_conf.duo.main;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.activity.AlbumListFragment;
-import jp.gr.java_conf.duo.activity.ArtistListFragment;
-import jp.gr.java_conf.duo.activity.TrackListFragment;
+import jp.gr.java_conf.duo.album.AlbumListFragment;
+import jp.gr.java_conf.duo.artist.ArtistListFragment;
+import jp.gr.java_conf.duo.track.TrackListFragment;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,10 +1,10 @@
-package jp.gr.java_conf.duo.activity;
+package jp.gr.java_conf.duo.track;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.TrackArrayAdapter;
-import jp.gr.java_conf.duo.domain.Track;
+import jp.gr.java_conf.duo.main.MainActivity;
+import jp.gr.java_conf.duo.play.PlayActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

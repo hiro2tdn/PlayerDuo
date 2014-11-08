@@ -16,7 +16,7 @@
 
         <!-- configChanges:画面回転時再描画させないため -->
         <activity
-            android:name="jp.gr.java_conf.duo.activity.MainActivity"
+            android:name="jp.gr.java_conf.duo.main.MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize" >
             <intent-filter>
@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name="jp.gr.java_conf.duo.activity.AlbumActivity"
+            android:name="jp.gr.java_conf.duo.album.AlbumActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize" >
             <intent-filter>
@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name="jp.gr.java_conf.duo.activity.TrackActivity"
+            android:name="jp.gr.java_conf.duo.track.TrackActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize" >
             <intent-filter>
@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name="jp.gr.java_conf.duo.activity.PlayActivity"
+            android:name="jp.gr.java_conf.duo.play.PlayActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize" >
             <intent-filter>

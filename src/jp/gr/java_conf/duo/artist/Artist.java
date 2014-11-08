@@ -1,4 +1,4 @@
-package jp.gr.java_conf.duo.domain;
+package jp.gr.java_conf.duo.artist;
 
 import java.util.ArrayList;
 import java.util.List;

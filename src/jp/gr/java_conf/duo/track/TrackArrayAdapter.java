@@ -1,9 +1,8 @@
-package jp.gr.java_conf.duo.adapter;
+package jp.gr.java_conf.duo.track;
 
 import java.util.List;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.domain.Track;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

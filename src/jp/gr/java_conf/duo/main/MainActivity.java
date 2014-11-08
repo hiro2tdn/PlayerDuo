@@ -1,7 +1,6 @@
-package jp.gr.java_conf.duo.activity;
+package jp.gr.java_conf.duo.main;
 
 import jp.gr.java_conf.duo.R;
-import jp.gr.java_conf.duo.adapter.MainPagerAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
