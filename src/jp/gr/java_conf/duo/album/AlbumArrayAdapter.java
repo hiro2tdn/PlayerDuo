@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/* アルバム配列アダプタ */
+/**
+ * アルバム配列アダプタ
+ */
 public class AlbumArrayAdapter extends ArrayAdapter<Album> {
 
     public AlbumArrayAdapter(Context context, List<Album> albumList) {

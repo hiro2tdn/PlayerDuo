@@ -12,12 +12,16 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-/* プレイアクティビティ */
+/**
+ * プレイアクティビティ
+ */
 public class PlayActivity extends FragmentActivity {
 
     private MediaPlayer mp;
@@ -133,13 +137,29 @@ public class PlayActivity extends FragmentActivity {
         findViewById(R.id.btn_left).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 曲の位置を１つ前に設定する
-                if (position <= 0) {
-                    position = trackList.size() - 1;
+                if (mp.getCurrentPosition() <= 3000) {
+                    // 曲の位置を１つ前に設定する
+                    if (position <= 0) {
+                        position = trackList.size() - 1;
+                    } else {
+                        position--;
+                    }
+
+                    if (mp.isPlaying()) {
+                        playMusic(); // 曲を再生する
+                    } else {
+                        if (isPaused) {
+                            isPaused = false; // 一時停止中フラグを解除する
+                            isPlayNext = false; // 連続再生フラグを解除する
+                            mp.seekTo(0); // 再生時間を0秒に設定する
+                            mp.stop(); // MPをStopped状態にする
+                        }
+                    }
                 } else {
-                    position--;
+                    mp.seekTo(0);
                 }
-                moveRightOrLeft(); // 右️ボタン、左ボタンの共通処理
+
+                setTextView(); // TextViewを設定する
             }
         });
 
@@ -154,7 +174,19 @@ public class PlayActivity extends FragmentActivity {
                 } else {
                     position++;
                 }
-                moveRightOrLeft(); // 右ボタン、左ボタンの共通処理
+
+                if (mp.isPlaying()) {
+                    playMusic(); // 曲を再生する
+                } else {
+                    if (isPaused) {
+                        isPaused = false; // 一時停止中フラグを解除する
+                        isPlayNext = false; // 連続再生フラグを解除する
+                        mp.seekTo(0); // 再生時間を0秒に設定する
+                        mp.stop(); // MPをStopped状態にする
+                    }
+                }
+
+                setTextView(); // TextViewを設定する
             }
         });
 
@@ -185,7 +217,9 @@ public class PlayActivity extends FragmentActivity {
         mBtnPlay.performClick();
     }
 
-    /* 新しい曲を再生する */
+    /**
+     * 新しい曲を再生する
+     */
     private void playMusic() {
         isPaused = false; // 一時停止中フラグを解除する
         isPlayNext = true; // 連続再生フラグを設定する
@@ -198,22 +232,9 @@ public class PlayActivity extends FragmentActivity {
         }
     }
 
-    /* 右ボタン、左ボタンの共通処理 */
-    private void moveRightOrLeft() {
-        if (mp.isPlaying()) {
-            playMusic(); // 曲を再生する
-        } else {
-            if (isPaused) {
-                isPaused = false; // 一時停止中フラグを解除する
-                isPlayNext = false; // 連続再生フラグを解除する
-                mp.seekTo(0); // 再生時間を0秒に設定する
-                mp.stop(); // MPをStopped状態にする
-            }
-        }
-        setTextView(); // TextViewを設定する
-    }
-
-    /* TextViewを設定する */
+    /**
+     * TextViewを設定する
+     */
     private void setTextView() {
         Track track = trackList.get(position);
         ((TextView) findViewById(R.id.track_name)).setText(track.getTitle());
@@ -230,7 +251,9 @@ public class PlayActivity extends FragmentActivity {
         return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
     }
 
-    /* Activity停止時の処理 */
+    /**
+     * Activity停止時の処理
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -241,7 +264,34 @@ public class PlayActivity extends FragmentActivity {
         }
     }
 
-    /* OSによる停止時の処理 */
+    /**
+     * メニューの作成
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    /**
+     * メニューの処理
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_scan_sdcard:
+            // サービステスト
+            Intent intent = new Intent(this, MyService.class);
+            startService(intent);
+            return true;
+        }
+
+        return onOptionsItemSelected(item);
+    }
+
+    /**
+     * OSによる停止時の処理
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

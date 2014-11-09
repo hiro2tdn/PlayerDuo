@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-/* トラック配列アダプタ */
+/**
+ * トラック配列アダプタ
+ */
 public class TrackArrayAdapter extends ArrayAdapter<Track> {
 
     public TrackArrayAdapter(Context context, List<Track> trackList) {

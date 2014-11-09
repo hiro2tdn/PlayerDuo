@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/* メインページャアダプタ */
+/**
+ * メインページャアダプタ
+ */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private String titles[];

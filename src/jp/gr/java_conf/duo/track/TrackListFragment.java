@@ -17,7 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* トラックリストフラグメント */
+/**
+ * トラックリストフラグメント
+ */
 public class TrackListFragment extends Fragment {
 
     @Override

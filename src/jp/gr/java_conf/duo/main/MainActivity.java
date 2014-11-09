@@ -14,7 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-/* メインアクティビティ */
+/**
+ * メインアクティビティ
+ */
 public class MainActivity extends FragmentActivity implements TabListener {
 
     public static final String CONST_ARTIST_ID = "ARTIST_ID";
@@ -56,28 +58,6 @@ public class MainActivity extends FragmentActivity implements TabListener {
         }
     }
 
-    /* メニューの作成 */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    /* メニューの処理 */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_scan_sdcard:
-            // SDカードのマウント
-            String _url = "file://" + Environment.getExternalStorageDirectory();
-            Uri _uri = Uri.parse(_url);
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
-            return true;
-        }
-
-        return onOptionsItemSelected(item);
-    }
-
     /**
      * タブを選択した時の処理
      */
@@ -100,4 +80,31 @@ public class MainActivity extends FragmentActivity implements TabListener {
     @Override
     public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
     }
+
+    /**
+     * メニューの作成
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    /**
+     * メニューの処理
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_scan_sdcard:
+            // SDカードのマウント
+            String _url = "file://" + Environment.getExternalStorageDirectory();
+            Uri _uri = Uri.parse(_url);
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
+            return true;
+        }
+
+        return onOptionsItemSelected(item);
+    }
+
 }

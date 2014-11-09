@@ -19,7 +19,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-/* アーティストリストフラグメント */
+/**
+ * アーティストリストフラグメント
+ */
 public class ArtistListFragment extends Fragment {
 
     @Override

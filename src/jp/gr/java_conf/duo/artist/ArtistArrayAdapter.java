@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-/* アーティスト配列アダプタ */
+/**
+ * アーティスト配列アダプタ
+ */
 public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
 
     public ArtistArrayAdapter(Context context, List<Artist> artistList) {
@@ -40,8 +42,7 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
 
         Artist artist = getItem(position);
         holder.artistNameTextView.setText(artist.getArtist());
-        holder.albumNumTextView.setText(getContext().getResources()
-                .getQuantityString(R.plurals.album_num, artist.getAlbumNum(), artist.getAlbumNum()));
+        holder.albumNumTextView.setText(getContext().getResources().getQuantityString(R.plurals.album_num, artist.getAlbumNum(), artist.getAlbumNum()));
 
         return convertView;
     }
