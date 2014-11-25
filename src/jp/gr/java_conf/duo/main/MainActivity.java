@@ -98,9 +98,9 @@ public class MainActivity extends FragmentActivity implements TabListener {
         switch (item.getItemId()) {
         case R.id.menu_scan_sdcard:
             // SDカードのマウント
-            String _url = "file://" + Environment.getExternalStorageDirectory();
-            Uri _uri = Uri.parse(_url);
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, _uri));
+            String url = "file://" + Environment.getExternalStorageDirectory();
+            Uri uri = Uri.parse(url);
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
             return true;
         }
 
