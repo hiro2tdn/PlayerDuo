@@ -21,10 +21,12 @@ public class TrackArrayAdapter extends ArrayAdapter<Track> {
     private static class ViewHolder {
         TextView trackNameTextView;
         TextView albumNameTextView;
+        TextView durationTextView;
 
         public ViewHolder(View view) {
             trackNameTextView = (TextView) view.findViewById(R.id.track_name);
             albumNameTextView = (TextView) view.findViewById(R.id.album_name);
+            durationTextView = (TextView) view.findViewById(R.id.duration);
         }
     }
 
@@ -43,6 +45,7 @@ public class TrackArrayAdapter extends ArrayAdapter<Track> {
         Track track = getItem(position);
         holder.trackNameTextView.setText(track.getTitle());
         holder.albumNameTextView.setText(track.getAlbum());
+        holder.durationTextView.setText(Track.makeViewPosition(track.getDuration()));
 
         return convertView;
     }

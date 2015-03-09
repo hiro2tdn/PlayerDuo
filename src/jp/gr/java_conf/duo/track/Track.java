@@ -3,6 +3,7 @@ package jp.gr.java_conf.duo.track;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -202,5 +203,11 @@ public class Track {
 
     public void setLyric(String lyric) {
         this.lyric = lyric;
+    }
+
+    public static String makeViewPosition(long pos) {
+        long dm = pos / 60000;
+        long ds = (pos - (dm * 60000)) / 1000;
+        return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
     }
 }

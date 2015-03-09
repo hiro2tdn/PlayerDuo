@@ -1,7 +1,6 @@
 package jp.gr.java_conf.duo.play;
 
 import java.util.List;
-import java.util.Locale;
 
 import jp.gr.java_conf.duo.R;
 import jp.gr.java_conf.duo.main.MainActivity;
@@ -240,15 +239,9 @@ public class PlayActivity extends FragmentActivity {
         ((TextView) findViewById(R.id.track_name)).setText(track.getTitle());
         ((TextView) findViewById(R.id.artist_name)).setText(track.getArtist());
         ((TextView) findViewById(R.id.album_name)).setText(track.getAlbum());
-        ((TextView) findViewById(R.id.duration)).setText(makeViewPosition(mp.getCurrentPosition()));
+        ((TextView) findViewById(R.id.duration)).setText(Track.makeViewPosition(mp.getCurrentPosition()));
         ((TextView) findViewById(R.id.track_no)).setText(new StringBuffer().append(position + 1).append("/").append(trackList.size()));
         ((TextView) findViewById(R.id.lyric)).setText(track.getLyric());
-    }
-
-    private String makeViewPosition(int pos) {
-        long dm = pos / 60000;
-        long ds = (pos - (dm * 60000)) / 1000;
-        return String.format(Locale.getDefault(), "%d:%02d", dm, ds);
     }
 
     /**
